@@ -1,0 +1,18 @@
+{
+  "name": "forgotten",
+  "version": "1.0.0",
+  "description": "Text based procedurally generated RPG",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Julian Ludwikowski",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^5.0.1",
+    "crypto": "^1.0.1",
+    "inquirer": "^9.0.0"
+  }
+}
