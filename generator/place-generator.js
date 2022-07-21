@@ -16,8 +16,10 @@ let PlaceGenerator = {
 
         const description = this.generatePlaceDescription(borderPlace1,borderPlace2);
         const name = this.adjective + ' ' + this.biome;
-        let items = ItemGenerator.generateItems();
-        let monsters = MonsterGenerator.generateMonsters();
+        let items = ItemGenerator.generateEntities();
+        let monsters = MonsterGenerator.generateEntities();
+        console.log('MONSTERS');
+        console.log(monsters);
         return new Place(name, this.biome, this.plantColor, description, location, items, monsters);
     },
 

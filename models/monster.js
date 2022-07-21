@@ -1,13 +1,11 @@
-import crypto from 'crypto';
 import chalk from "chalk";
+import Entity from "./entity.js";
 
-class Monster {
+class Monster extends Entity{
 
     constructor(name, description, attributes, items, mainWeapon, money) {
+        super(name,description);
         this.identity = 'monster',
-        this.id = crypto.randomUUID(),
-        this.name = name,
-        this.description = description,
         this.attributes = attributes,
         this.mainWeapon = mainWeapon,
         this.items = items,
@@ -18,11 +16,6 @@ class Monster {
         this.name = monster.name? monster.name + ' ' + this.name: this.name;
         this.description = monster.description? monster.description + ' ' + this.description: this.description;
         this.attributes.adjust(monster.attributes);
-    }
-
-    append(adjective) {
-        this.name = adjective + ' ' + this.name;
-        this.description = adjective + ' ' + this.description;
     }
 
     getAttack() {

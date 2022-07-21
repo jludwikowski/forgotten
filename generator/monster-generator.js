@@ -1,37 +1,14 @@
-import roller from './roller.js';
 import MonsterStats from '../stats/monster-stats.js'
 import Adjectives from "../models/adjectives.js";
-import Monster from "../models/monster.js";
+import Generator from "./generator.js";
 
-let MonsterGenerator = {
-    monsterTypes: ['goblin','orc','slime','wolf','spider','lizard','human','boar','rat','ogre'],
+let monsterTypes = ['goblin','orc','slime','wolf','spider','lizard','human','boar','rat','ogre'];
+let sizeAdjectives = ['small','large','huge'];
+let traitAdjectives = ['strange','dark','ugly','terrifying','pale'];
+let magicAdjectives = ['zombie','fire','water','earth','air','demonic','spirit','skeletal'];
 
-    /*percentage of chance for each ADJ*/
-    sizeAdjectives: ['small','large','huge'],
-    traitAdjectives: ['strange','dark','ugly','terrifying','pale'],
-    magicAdjectives: ['zombie','fire','water','earth','air','demonic','spirit','skeletal'],
+let adjectivesTable = [new Adjectives(10,magicAdjectives),new Adjectives(75,traitAdjectives),new Adjectives(50,sizeAdjectives)]
 
-    generateMonsters() {
-        let monsters=[];
-        while(roller.roll()<50){
-            monsters.push(this.generateMonster())
-        }
-        return monsters;
-    },
-
-    generateMonster() {
-        let type = roller.pickAtRandom(this.monsterTypes);
-        let monster = MonsterStats[type]();
-        let adjectivesTables = [new Adjectives(10,this.magicAdjectives),new Adjectives(75,this.traitAdjectives),new Adjectives(50,this.sizeAdjectives)];
-        let adjectives = []
-        adjectivesTables.forEach(adjectiveTable => adjectives.push(adjectiveTable.getAdjective()));
-        adjectives = adjectives.filter(adj => adj!=null);
-        adjectives.forEach(adjective => (adjective in MonsterStats) ? monster.adjust(MonsterStats[adjective]()) : monster.append(adjective));
-
-        console.log(monster.name);
-        console.log(monster.attributes);
-        return monster;
-    },
-}
+let MonsterGenerator = new Generator(50, monsterTypes, adjectivesTable, MonsterStats);
 
 export default MonsterGenerator

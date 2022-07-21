@@ -23,8 +23,7 @@ class Generator {
         this.adjectivesTables.forEach(adjectiveTable => adjectives.push(adjectiveTable.getAdjective()));
         adjectives = adjectives.filter(adj => adj!=null);
         adjectives.forEach(adjective => (adjective in this.statsObject) ? entity.adjust(this.statsObject[adjective]()) : entity.append(adjective));
-
-        console.log(entity);
+        return entity;
     }
 
 }

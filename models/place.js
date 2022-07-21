@@ -1,16 +1,15 @@
 import chalk from "chalk";
 import crypto from 'crypto';
 import world from "./world.js";
+import Entity from "./entity.js";
 
-class Place {
+class Place extends Entity {
 
     constructor(name, biome, plantColor, description, location, items, monsters) {
+        super(name, description)
         this.identity = 'place',
         this.biome = biome,
         this.plantColor = plantColor,
-        this.id = crypto.randomUUID(),
-        this.name = name,
-        this.description = description,
         this.location = location,
         this.impassable = false;
         this.items = items,
