@@ -22,8 +22,13 @@ class Generator {
         let adjectives = []
         this.adjectivesTables.forEach(adjectiveTable => adjectives.push(adjectiveTable.getAdjective()));
         adjectives = adjectives.filter(adj => adj!=null);
+        adjectives = this.moreAdjectives(type, adjectives);
         adjectives.forEach(adjective => (adjective in this.statsObject) ? entity.adjust(this.statsObject[adjective]()) : entity.append(adjective));
         return entity;
+    }
+
+    moreAdjectives(type,adjectives) {
+        return adjectives;
     }
 
 }

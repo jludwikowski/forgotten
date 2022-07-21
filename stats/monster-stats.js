@@ -5,9 +5,9 @@ import roller from "../generator/roller.js";
 import ItemGenerator from "../generator/item-generator.js";
 
 let MonsterStats = {
-    goblin() {return new Monster('goblin', 'goblin', new Attributes(10, 10, 1, 20), ItemGenerator.generateEntities(), WeaponGenerator.generateWeapon(), roller.rollDice(5))},
-    orc() {return new Monster('orc', 'orc', new Attributes(30, 30, 3, 20), ItemGenerator.generateEntities(), WeaponGenerator.generateWeapon(), roller.rollDice(20))},
-    ogre() {return new Monster('ogre', 'ogre', new Attributes(70, 70, 6, 10), ItemGenerator.generateEntities(), WeaponGenerator.generateWeapon(), roller.rollDice(20))},
+    goblin() {return new Monster('goblin', 'goblin', new Attributes(10, 10, 1, 20), ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), roller.rollDice(5))},
+    orc() {return new Monster('orc', 'orc', new Attributes(30, 30, 3, 20), ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), roller.rollDice(20))},
+    ogre() {return new Monster('ogre', 'ogre', new Attributes(70, 70, 6, 10), ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), roller.rollDice(20))},
     slime() {return new Monster('slime', 'slime', new Attributes(40, 40, 1, 10), ItemGenerator.generateEntities(), null, roller.rollDice(10))},
     wolf() {return new Monster('wolf', 'wolf', new Attributes(20, 20, 2, 30), null, null, 0)},
     spider() {return new Monster('spider', 'spider', new Attributes(30, 30, 1, 30), null, null, 0)},
@@ -16,8 +16,8 @@ let MonsterStats = {
     rat() {return new Monster('rat', 'rat', new Attributes(10, 10, 0, 10), null, null, 0)},
     bear() {return new Monster('bear', 'bear', new Attributes(80, 80, 7, 15), null, null, 0)},
     dragon() {return new Monster('dragon', 'dragon', new Attributes(1000, 1000, 12, 50), null, null, 0)},
-    human() {return new Monster('human bandit', 'human bandit', new Attributes(30, 30, 1, 20), ItemGenerator.generateEntities(), WeaponGenerator.generateWeapon(), roller.rollDice(20))},
-    elf() {return new Monster('elf bandit', 'elf bandit', new Attributes(20, 20, 1,  0), ItemGenerator.generateEntities(), WeaponGenerator.generateWeapon(), roller.rollDice(20))},
+    human() {return new Monster('human bandit', 'human bandit', new Attributes(30, 30, 1, 20), ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), roller.rollDice(20))},
+    elf() {return new Monster('elf bandit', 'elf bandit', new Attributes(20, 20, 1,  0), ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), roller.rollDice(20))},
 
     small() {return new Monster('small', 'small', new Attributes(0.8, 0.8, -1, 0), null, null, 0)},
     large() {return new Monster('large', 'large', new Attributes(1.2, 1.2, 1, 0), null, null, 0)},
