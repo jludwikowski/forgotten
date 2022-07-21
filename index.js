@@ -9,10 +9,6 @@ import Weapon from "./models/weapon.js";
 
 var player;
 
-console.log(`
-    ${chalk.magentaBright('Welcome to Forgotten')}
-    Your vision start to focus`);
-
 async function askName() {
     const answer = await inquirer.prompt({
         name: 'player_name',
@@ -23,12 +19,12 @@ async function askName() {
         },
     });
     return answer.player_name;
-};
+}
 
 async function createPlayer() {
     let name = await askName();
     let description = 'Human';
-    return new Player(name,description,[0,5,5]);
+    return new Player(name,description,'human',[0,5,5]);
 }
 
 async function monstersActions(player, place) {
@@ -139,15 +135,23 @@ async function mainAction(location) {
     }
 }
 
+async function customizeMap(player){
+    let rustySword = new Weapon('old sword','very old sword',1.5,10,2);
+    World.getPlace(player.location).items.push(rustySword);
+    World.getPlace(player.location).monsters = [];
+    World.getPlace(player.location).describeThySelf();
+}
+
 async function mainGameLoop() {
     await World.genereateWorld(1,20,30);
     World.drawMap();
     player = await createPlayer();
 
-    /* Start game setup */
-    let rustySword = new Weapon('old sword','very old sword',1.5,10,2);
-    World.getPlace(player.location).items.push(rustySword);
-    World.getPlace(player.location).describeThySelf();
+    console.log(`
+    ${chalk.magentaBright('Welcome to Forgotten')}
+    Your vision start to focus`);
+
+    await customizeMap(player);
 
     while(player.attributes.currentHP > 0) {
         await mainAction(player.location);

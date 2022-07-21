@@ -8,10 +8,12 @@ class Attributes {
     }
 
     adjust(adjustAttributes) {
-        this.maxHP += adjustAttributes.maxHP;
-        this.currentHP += adjustAttributes.currentHP;
-        this.strength += adjustAttributes.strength;
-        this.attack += adjustAttributes.attack;
+        if(adjustAttributes!=null) {
+            this.maxHP = Math.round(adjustAttributes.maxHP * this.maxHP);
+            this.currentHP = Math.round(adjustAttributes.currentHP * this.currentHP);
+            this.strength += adjustAttributes.strength;
+            this.attack += adjustAttributes.attack;
+        }
     }
 
     show() {

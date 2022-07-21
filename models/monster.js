@@ -20,6 +20,11 @@ class Monster {
         this.attributes.adjust(monster.attributes);
     }
 
+    append(adjective) {
+        this.name = adjective + ' ' + this.name;
+        this.description = adjective + ' ' + this.description;
+    }
+
     getAttack() {
         let weaponAttack = (this.mainWeapon) ? this.mainWeapon.attackBonus : 0;
         return weaponAttack + this.attributes.attack;
