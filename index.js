@@ -34,13 +34,24 @@ async function monstersActions(player, place) {
     player.heal(1);
 }
 
-async function travel(player, place, direction) {
+async function directionOrder(player, place, direction, action) {
     let newLocation =  world.getLocation(player.location,direction);
     if (world.canTravel(player.location, newLocation)) {
-        monstersActions(player, place);
+        await monstersActions(player, place);
+        await actions[action](newLocation)
+    }
+}
+
+const actions = {
+    travel(newLocation) {
         player.location = newLocation;
         console.log('You are in:');
         World.getPlace(player.location).describeThySelf();
+    },
+
+    peer(newLocation) {
+        console.log('You look further and see:');
+        World.getPlace(newLocation).describeThySelf();
     }
 }
 
@@ -59,27 +70,27 @@ async function mainAction(location) {
 
     switch (answer.main_action) {
         case 'n':
-            travel(player, place, 'n');
+            await directionOrder(player, place, 'n','travel');
             break;
         case 's':
-            travel(player, place, 's');
+            await directionOrder(player, place, 's','travel');
             break;
         case 'w':
-            travel(player, place, 'w');
+            await directionOrder(player, place, 'w','travel');
             break;
         case 'e':
-            travel(player, place, 'e');
+            await directionOrder(player, place, 'e','travel');
             break;
         case 'attack':
             if(place.monsters && place.monsters.length>0) {
                 Judge.resolvePlayerAttack(player, place.monsters, place);
-                monstersActions(player, place);
+                await monstersActions(player, place);
             }
             break;
         case 'a':
             if(place.monsters && place.monsters.length>0) {
                 Judge.resolvePlayerAttack(player, place.monsters, place);
-                monstersActions(player, place);
+                await monstersActions(player, place);
             }
             break;
         case 'l':
@@ -87,24 +98,16 @@ async function mainAction(location) {
             place.describeThySelf();
             break;
         case 'ln':
-            console.log('You peer north and see:');
-            world.getPlace(world.getLocation(location,'n')).describeThySelf();
-            monstersActions(player, place);
+            await directionOrder(player, place, 'n','peer');
             break;
         case 'ls':
-            console.log('You peer south and see:');
-            world.getPlace(world.getLocation(location,'s')).describeThySelf();
-            monstersActions(player, place);
+            await directionOrder(player, place, 's','peer');
             break;
         case 'lw':
-            console.log('You peer west and see:');
-            world.getPlace(world.getLocation(location,'w')).describeThySelf();
-            monstersActions(player, place);
+            await directionOrder(player, place, 'w','peer');
             break;
         case 'le':
-            console.log('You peer east and see:');
-            world.getPlace(world.getLocation(location,'e')).describeThySelf();
-            monstersActions(player, place);
+            await directionOrder(player, place, 'e','peer');
             break;
         case 'stats':
             player.showStats();
@@ -113,13 +116,13 @@ async function mainAction(location) {
             console.log(player.mainWeapon);
             break;
         case 'wait':
-            monstersActions(player, place);
+            await monstersActions(player, place);
             break;
         case 'p':
             let item = place.items.pop();
             place.items.push(player.mainWeapon);
             player.mainWeapon = item;
-            monstersActions(player, place);
+            await monstersActions(player, place);
             break;
         case 'help':
             console.log('n, e, w, s - travel commands');
