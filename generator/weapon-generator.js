@@ -34,14 +34,14 @@ WeaponGenerator.pickMaterial = function(ordinary,advanced,epic){
     return material;
 };
 
-WeaponGenerator.moreAdjectives = function(type, givenAdjectivesTable) {
+WeaponGenerator.getFinalAdjectivesTable = function(type, givenAdjectivesTable) {
     let material;
     if(type=='staff' || type=='bow') {
         material = this.pickMaterial(ordinaryWoodMaterials, advancedWoodMaterials, epicWoodMaterials);
     } else {
         material = this.pickMaterial(ordinaryMetalMaterials, advancedMetalMaterials, epicMetalMaterials);
     }
-    givenAdjectivesTable.push(material);
+    givenAdjectivesTable.unshift(material);
     return givenAdjectivesTable;
 }
 
