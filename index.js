@@ -6,26 +6,9 @@ import Player from "./models/player.js";
 import Judge from "./engine/Judge.js";
 import world from "./models/world.js";
 import Weapon from "./models/weapon.js";
+import CharacterCreator from "./engine/character-creator.js";
 
-var player;
-
-async function askName() {
-    const answer = await inquirer.prompt({
-        name: 'player_name',
-        type: 'input',
-        message: 'What is your name?',
-        default() {
-            return 'Forgotten';
-        },
-    });
-    return answer.player_name;
-}
-
-async function createPlayer() {
-    let name = await askName();
-    let description = 'Human';
-    return new Player(name,description,'human',[0,5,5]);
-}
+let player;
 
 async function monstersActions(player, place) {
     if(place.monsters && place.monsters.length>0) {
@@ -148,7 +131,7 @@ async function customizeMap(player){
 async function mainGameLoop() {
     await World.genereateWorld(1,20,30);
     World.drawMap();
-    player = await createPlayer();
+    player = await CharacterCreator.createPlayer();
 
     console.log(`
     ${chalk.magentaBright('Welcome to Forgotten')}

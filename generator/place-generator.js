@@ -1,5 +1,5 @@
 import Place from '../models/place.js';
-import roller from './roller.js';
+import roller from '../engine/roller.js';
 import MonsterGenerator from "./monster-generator.js";
 import ItemGenerator from "./item-generator.js";
 

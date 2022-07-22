@@ -1,4 +1,4 @@
-import roller from "../generator/roller.js";
+import roller from "../engine/roller.js";
 
 class Adjectives {
     constructor(probability, adjectivesTable) {

@@ -1,4 +1,4 @@
-import roller from "./roller.js";
+import roller from "../engine/roller.js";
 import Generator from "./generator.js";
 import Adjectives from "../models/adjectives.js";
 import WeaponStats from "../stats/weapon-stats.js";

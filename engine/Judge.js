@@ -1,4 +1,4 @@
-import roller from "../generator/roller.js";
+import roller from "./roller.js";
 
 let Judge = {
     attack(monster1, monster2) {

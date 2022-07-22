@@ -1,7 +1,7 @@
 import Attributes from "../models/attributes.js";
 import Monster from "../models/monster.js";
 import WeaponGenerator from "../generator/weapon-generator.js";
-import roller from "../generator/roller.js";
+import roller from "../engine/roller.js";
 import ItemGenerator from "../generator/item-generator.js";
 
 let MonsterStats = {

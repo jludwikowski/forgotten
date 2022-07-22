@@ -1,4 +1,4 @@
-import roller from "./roller.js";
+import roller from "../engine/roller.js";
 
 class Generator {
     constructor(entityProbability, types, adjectivesTables, statsObject) {
