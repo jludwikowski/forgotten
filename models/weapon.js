@@ -5,6 +5,7 @@ class Weapon extends Item {
         super(name, description, weight, price),
         this.attackBonus = attackBonus,
         this.baseDamage = baseDamage
+        this.equipable = true;
     }
 
     adjust(weapon){

@@ -25,6 +25,18 @@ async function directionOrder(player, place, direction, action) {
     }
 }
 
+async function askForName() {
+    const answer = await inquirer.prompt({
+        name: 'name',
+        type: 'input',
+        message: 'What are you looking for?',
+        default() {
+            return '';
+        },
+    });
+    return answer.name;
+}
+
 const actions = {
     travel(newLocation) {
         player.location = newLocation;
@@ -92,6 +104,9 @@ async function mainAction(location) {
         case 'le':
             await directionOrder(player, place, 'e','peer');
             break;
+        case 'i':
+            console.log(player.items);
+            break;
         case 'stats':
             player.showStats();
             break;
@@ -101,11 +116,25 @@ async function mainAction(location) {
         case 'wait':
             await monstersActions(player, place);
             break;
+        case 'pm':
+            player.money += place.money;
+            place.money = 0;
         case 'p':
-            let item = place.items.pop();
-            place.items.push(player.mainWeapon);
-            player.mainWeapon = item;
+            if(place.items!=null) {
+                while(place.items.length > 0){
+                    player.items.push(place.items.pop());
+                }
+            }
             await monstersActions(player, place);
+            break;
+        case 'equip':
+            let equipmentName = await askForName();
+            player.equip(equipmentName);
+            await monstersActions(player, place);
+            break;
+        case 'drop':
+            let itemName = await askForName();
+            player.drop(itemName);
             break;
         case 'help':
             console.log('n, e, w, s - travel commands');
@@ -113,7 +142,9 @@ async function mainAction(location) {
             console.log('l - commands to look around');
             console.log('ln,ls,le,lw - commands to look into nearby area north, south east and west respectively');
             console.log('stats - to show your current attributes. Same goes for weapon stat');
-            console.log('p - stands for pick up item');
+            console.log('i - display inventory');
+            console.log('p - stands for pick up all, pm - pick up money');
+            console.log('equip - to equip item from inventory, drop - to drop inventory item');
             console.log('wait - waits in place... for healing mostly')
             break;
         default:
@@ -122,7 +153,7 @@ async function mainAction(location) {
 }
 
 async function customizeMap(player){
-    let rustySword = new Weapon('old sword','very old sword',1.5,10,2);
+    let rustySword = new Weapon('old sword','very old sword',1.5,10,2,3);
     World.getPlace(player.location).items.push(rustySword);
     World.getPlace(player.location).monsters = [];
     World.getPlace(player.location).describeThySelf();

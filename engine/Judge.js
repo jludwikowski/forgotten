@@ -18,13 +18,13 @@ let Judge = {
     },
 
     monsterDrop(monster, place){
-        if(monster.mainWeapon) {
-            place.items.push(monster.mainWeapon);
-        }
         if(monster.items) {
             while(monster.items.length>0) {
                 place.items.push(monster.items.pop());
             }
+        }
+        if(monster.mainWeapon) {
+            place.items.push(monster.mainWeapon);
         }
         place.money += monster.money;
     },

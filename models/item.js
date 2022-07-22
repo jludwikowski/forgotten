@@ -7,6 +7,7 @@ class Item extends Entity {
         this.identity = 'item',
         this.weight = weight,
         this.price = price
+        this.equipable = false;
     }
 
     adjust(item){
