@@ -1,7 +1,6 @@
-import roller from "../engine/roller.js";
-import Generator from "./generator.js";
 import Adjectives from "../models/adjectives.js";
 import WeaponStats from "../stats/weapon-stats.js";
+import MaterialItemGenerator from "./material-item-generator.js";
 
 let types = ['sword','axe','spear','bow','dagger','mace','staff'];
 let adjectives = ['old','weathered','new','strange','dangerous','exceptional','elf-crafted'];
@@ -16,33 +15,10 @@ let ordinaryWoodMaterials = ['oak','yew','beech','ash'];
 let advancedWoodMaterials = ['black oak','plague ash','millander'];
 let epicWoodMaterials = ['dragon bone'];
 
-let adjectivesTable = [new Adjectives(10,magicAdjectives),new Adjectives(10,advancedAdjectives),new Adjectives(75,adjectives)]
+let adjectivesTable = [new Adjectives(10,magicAdjectives),new Adjectives(10,advancedAdjectives),new Adjectives(75,adjectives)];
+let woodMaterialsTable = [new Adjectives(1,epicWoodMaterials), new Adjectives(5,advancedWoodMaterials), new Adjectives(100,ordinaryWoodMaterials)];
+let metalMaterialsTable = [new Adjectives(1,epicMetalMaterials), new Adjectives(5,advancedMetalMaterials), new Adjectives(100,ordinaryMetalMaterials)];
 
-let WeaponGenerator = new Generator(10, types, adjectivesTable, WeaponStats);
-
-WeaponGenerator.pickMaterial = function(ordinary,advanced,epic){
-    let material;
-    if(roller.roll()<1){
-        material = roller.pickAtRandom(epic);
-    } else {
-        if(roller.roll()<5) {
-            material = roller.pickAtRandom(advanced);
-        } else {
-            material = roller.pickAtRandom(ordinary);
-        }
-    }
-    return material;
-};
-
-WeaponGenerator.getFinalAdjectivesTable = function(type, givenAdjectivesTable) {
-    let material;
-    if(type=='staff' || type=='bow') {
-        material = this.pickMaterial(ordinaryWoodMaterials, advancedWoodMaterials, epicWoodMaterials);
-    } else {
-        material = this.pickMaterial(ordinaryMetalMaterials, advancedMetalMaterials, epicMetalMaterials);
-    }
-    givenAdjectivesTable.unshift(material);
-    return givenAdjectivesTable;
-}
+let WeaponGenerator = new MaterialItemGenerator(10, types, adjectivesTable, [woodMaterialsTable,metalMaterialsTable], ['staff','bow'], WeaponStats);
 
 export default WeaponGenerator;

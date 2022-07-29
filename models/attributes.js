@@ -1,10 +1,11 @@
 class Attributes {
 
-    constructor(maxHP, currentHP, strength, attack) {
+    constructor(maxHP, currentHP, strength, attack, naturalArmor) {
         this.maxHP = maxHP,
         this.currentHP = currentHP,
         this.strength = strength,
-        this.attack = attack
+        this.attack = attack,
+        this.naturalArmor = naturalArmor ? naturalArmor : 0
     }
 
     adjust(adjustAttributes) {

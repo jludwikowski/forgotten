@@ -3,13 +3,14 @@ import Entity from "./entity.js";
 
 class Monster extends Entity{
 
-    constructor(name, description, attributes, items, mainWeapon, money) {
+    constructor(name, description, attributes, items, mainWeapon, armor, money) {
         super(name,description);
         this.identity = 'monster',
         this.attributes = attributes,
         this.mainWeapon = mainWeapon,
         this.items = items,
-        this.money = money
+        this.money = money,
+        this.armor = armor
     }
 
     adjust(monster) {

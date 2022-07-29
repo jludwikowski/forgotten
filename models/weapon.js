@@ -9,12 +9,9 @@ class Weapon extends Item {
     }
 
     adjust(weapon){
-        this.name = weapon.name? weapon.name + ' ' + this.name: this.name;
-        this.description = weapon.description? weapon.description + ' ' + this.description: this.description;
-        this.weight +=  weapon.weight;
+        super.adjust(weapon);
         this.attackBonus += weapon.attackBonus;
         this.baseDamage += weapon.baseDamage;
-        this.price = Math.round(this.price*weapon.price);
     }
 }
 
