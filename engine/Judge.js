@@ -26,6 +26,9 @@ let Judge = {
         if(monster.mainWeapon) {
             place.items.push(monster.mainWeapon);
         }
+        if(monster.armor) {
+            place.items.push(monster.armor);
+        }
         place.money += monster.money;
     },
 

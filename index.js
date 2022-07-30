@@ -21,12 +21,16 @@ async function mainAction(player) {
     });
 
     const command = Action.parseCommand(answer.main_action);
-    await Action[command.shift()](command, player, World.getPlace(player.location));
-
+    if(command) {
+        const mainCommand = command.shift()
+        if (mainCommand in Action) {
+            await Action[mainCommand](command, player, World.getPlace(player.location));
+        }
+    }
 }
 
 async function customizeMap(player){
-    let rustySword = new Weapon('old sword','very old sword',1.5,10,2,3);
+    let rustySword = new Weapon('old sword','old sword',1.5,10,2,3);
     World.getPlace(player.location).items.push(rustySword);
     World.getPlace(player.location).monsters = [];
     World.getPlace(player.location).describeThySelf();

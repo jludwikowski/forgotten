@@ -30,9 +30,16 @@ class Monster extends Entity{
     }
 
     damage(damageValue) {
-        this.attributes.currentHP -= damageValue;
-        if(this.attributes.currentHP<0) {
-            console.log(chalk.red(this.name + ' is DEAD'));
+        let armor = this.attributes.naturalArmor? this.attributes.naturalArmor: 0;
+        armor += this.armor? this.armor.damageReduction: 0;
+        damageValue -= armor;
+        if(damageValue>0) {
+            this.attributes.currentHP -= damageValue;
+            if (this.attributes.currentHP < 0) {
+                console.log(chalk.red(this.name + ' is DEAD'));
+            }
+        } else {
+            console.log(chalk.yellow(this.name + '\'s armor soaked all damage'));
         }
     }
 

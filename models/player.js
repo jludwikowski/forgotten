@@ -38,8 +38,14 @@ class Player extends Monster {
     equip(name) {
         const index = this.findItem(name);
         if(index != -1 && this.items[index].equipable) {
-            let oldItem = this.mainWeapon;
-            this.mainWeapon = this.items[index];
+            let oldItem
+            if(this.items[index] instanceof Weapon) {
+                oldItem = this.mainWeapon;
+                this.mainWeapon = this.items[index];
+            } else {
+                oldItem = this.armor;
+                this.armor = this.items[index];
+            }
             this.items.splice(index, 1);
             this.items.push(oldItem);
         } else {
