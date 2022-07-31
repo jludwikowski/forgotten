@@ -2,7 +2,7 @@ import roller from "./roller.js";
 
 let Judge = {
     attack(monster1, monster2) {
-        if(roller.roll()<monster1.getAttack()){
+        if(roller.roll() < (monster1.getAttack() - monster2.getDefence())){
             let damageRoll = roller.rollDice(5);
             let damage = monster1.getDamage() + damageRoll;
             console.log(monster1.name + ' hit ' + monster2.name + ' for: ' + damage + 'HP')

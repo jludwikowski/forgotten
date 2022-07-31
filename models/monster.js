@@ -19,9 +19,14 @@ class Monster extends Entity{
         this.attributes.adjust(monster.attributes);
     }
 
-    getAttack() {
+    getAttack(type) {
         let weaponAttack = (this.mainWeapon) ? this.mainWeapon.attackBonus : 0;
-        return weaponAttack + this.attributes.attack;
+        let naturalAttack = (type == 'ranged')? this.attributes.agility*4 + this.attributes.ranged*4: this.attributes.agility*2 + this.attributes.strength*2 + this.attributes.melee*4;
+        return weaponAttack + naturalAttack;
+    }
+
+    getDefence() {
+        return this.attributes.reflex*3 + this.attributes.agility - this.attributes.size*2;
     }
 
     getDamage() {

@@ -9,8 +9,7 @@ class Player extends Monster {
         let items = [new Item('coin','small copper coin',0.1,1)];
         let mainWeapon = new Weapon('rusty sword', 'rusty sword', 1.4, 0, 3,5);
         super(name, description, BoilerPlate.attributes, items, mainWeapon, null, 0);
-        console.log(this);
-        console.log(this.money);
+        this.exp = 0;
         this.location = location;
     }
 

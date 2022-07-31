@@ -1,19 +1,36 @@
 class Attributes {
 
-    constructor(maxHP, currentHP, strength, attack, naturalArmor) {
-        this.maxHP = maxHP,
-        this.currentHP = currentHP,
+    constructor(size, body, strength, agility, reflex, intellect, willpower, melee, ranged, spellcasting, naturalArmor) {
+        this.size = size,
+        this.body = body,
         this.strength = strength,
-        this.attack = attack,
+        this.agility = agility,
+        this.reflex = reflex,
+        this.intellect = intellect,
+        this.willpower = willpower,
+        this.melee = melee,
+        this.ranged = ranged,
+        this.spellcasting = spellcasting
+        this.maxHP = this.body*5+5+this.size*2,
+        this.currentHP = this.maxHP,
         this.naturalArmor = naturalArmor ? naturalArmor : 0
     }
 
     adjust(adjustAttributes) {
         if(adjustAttributes!=null) {
-            this.maxHP = Math.round(adjustAttributes.maxHP * this.maxHP);
-            this.currentHP = Math.round(adjustAttributes.currentHP * this.currentHP);
+            this.size += adjustAttributes.size;
+            this.body += adjustAttributes.body;
             this.strength += adjustAttributes.strength;
-            this.attack += adjustAttributes.attack;
+            this.agility += adjustAttributes.agility;
+            this.reflex += adjustAttributes.reflex;
+            this.intellect += adjustAttributes.intellect;
+            this.willpower += adjustAttributes.willpower;
+            this.melee += adjustAttributes.melee;
+            this.ranged += adjustAttributes.ranged;
+            this.spellcasting += adjustAttributes.spellcasting;
+            this.naturalArmor = adjustAttributes.naturalArmor? this.naturalArmor + adjustAttributes.naturalArmor: this.naturalArmor;
+            this.maxHP = this.body*5+5+this.size*2,
+            this.currentHP = this.maxHP
         }
     }
 
