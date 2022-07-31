@@ -18,7 +18,7 @@ let MonsterStats = {
     bear() {return new Monster('bear', 'bear', new Attributes(80, 80, 7, 15), null, null, 0)},
     dragon() {return new Monster('dragon', 'dragon', new Attributes(1000, 1000, 12, 50, 10), null, null, 0)},
     human() {return new Monster('human bandit', 'human bandit', new Attributes(30, 30, 1, 20), ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(20))},
-    elf() {return new Monster('elf bandit', 'elf bandit', new Attributes(20, 20, 1,  0), ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(20))},
+    elf() {return new Monster('elf bandit', 'elf bandit', new Attributes(20, 20, 1,  25), ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(20))},
 
     small() {return new Monster('small', 'small', new Attributes(0.8, 0.8, -1, 0), null, null, 0)},
     large() {return new Monster('large', 'large', new Attributes(1.2, 1.2, 1, 0), null, null, 0)},

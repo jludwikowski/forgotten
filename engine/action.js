@@ -5,6 +5,8 @@ import chalk from "chalk";
 
 let Action = {
 
+    lastLocation: null,
+
     parseCommand(command){
         return command.split(/(\s+)/).filter( e => e.trim().length > 0);
     },
@@ -99,12 +101,23 @@ let Action = {
 
     drop(args, player, place) { player.drop(args.join(' ')); },
 
+    go(args, player, place) {
+        if(place.feature.place) {
+            this.lastLocation = player.location;
+            player.location = place.feature.place.location;
+            place.feature.place.describeThySelf();
+        }
+    },
+
+    exit(args, player, place) { player.location = this.lastLocation; World.getPlace(player.location).describeThySelf(); },
+
     async buy(args, player, place) { if(place.feature instanceof Shop) { await place.feature.initiateTrade(player,place.feature.inventory,'buy')} },
 
     async sell(args, player, place) { if(place.feature instanceof Shop) { await place.feature.initiateTrade(player,player.items,'sell')} },
 
     help() {
         console.log('n, e, w, s - travel commands');
+        console.log('go strange cave, go small hut - makes you travel into building or cave, exit makes you go out');
         console.log('attack - or just a will attack the closest enemy');
         console.log('l - commands to look around');
         console.log('ln,ls,le,lw - commands to look into nearby area north, south east and west respectively');

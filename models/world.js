@@ -8,7 +8,15 @@ let World = {
     genereateWorld(dimentionZ, dimentionX, dimentionY){
         for (let z = 0; z < dimentionZ; z++) {
             this.locations.push([]);
+            this.generateEmptyDungeonDimention(dimentionX);
             this.generateDimention(z, dimentionX, dimentionY);
+        }
+    },
+
+    generateEmptyDungeonDimention(dimentionX){
+        this.locations.push([]);
+        for(let i=0;i<dimentionX;i++){
+            this.locations[1].push([]);
         }
     },
 
@@ -38,6 +46,9 @@ let World = {
     },
 
     canTravel(location1,location2){
+        if(this.getPlace(location2)==null) {
+            return false;
+        }
         let z = location2[0];
         let x = location2[1];
         let y = location2[2];
@@ -88,26 +99,31 @@ let World = {
         for (let i = this.locations[currentLevel].length-1; i >= 0 ; i--) {
             let row ='';
             for (let j = 0; j < this.locations[currentLevel][0].length; j++) {
-                switch(this.locations[currentLevel][i][j].biome) {
-                    case 'desert':
-                        row+=`${(chalk.bgYellow('dd'))}`;
-                        break;
-                    case 'mountain':
-                        row+=`${(chalk.bgWhite('MM'))}`;
-                        break;
-                    case 'hill':
-                        row+=`${(chalk.bgGray('hh'))}`;
-                        break;
-                    case 'meadow':
-                        row+=`${(chalk.bgGreenBright('~~'))}`;
-                        break;
-                    case 'forest':
-                        row+=`${(chalk.bgGreen('ff'))}`;
-                        break;
-                    case 'swamp':
-                        row+=`${(chalk.bgBlue('ss'))}`;
-                        break;
-                    default:
+                if(this.locations[currentLevel][i][j]) {
+                    switch (this.locations[currentLevel][i][j].biome) {
+                        case 'desert':
+                            row += `${(chalk.bgYellow('dd'))}`;
+                            break;
+                        case 'mountain':
+                            row += `${(chalk.bgWhite('MM'))}`;
+                            break;
+                        case 'hill':
+                            row += `${(chalk.bgGray('hh'))}`;
+                            break;
+                        case 'meadow':
+                            row += `${(chalk.bgGreenBright('~~'))}`;
+                            break;
+                        case 'forest':
+                            row += `${(chalk.bgGreen('ff'))}`;
+                            break;
+                        case 'swamp':
+                            row += `${(chalk.bgBlue('ss'))}`;
+                            break;
+                        default:
+                            row += `${(chalk.bgMagenta('DD'))}`;
+                    }
+                } else {
+                    row += `${(chalk.bgBlack('  '))}`;
                 }
             }
             console.log(row);

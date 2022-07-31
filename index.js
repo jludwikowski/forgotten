@@ -42,6 +42,7 @@ async function customizeMap(player){
 async function mainGameLoop() {
     await World.genereateWorld(1,20,30);
     World.drawMap();
+    World.drawMap(1);
     player = await CharacterCreator.createPlayer();
 
     console.log(`

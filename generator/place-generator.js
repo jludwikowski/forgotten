@@ -3,6 +3,7 @@ import roller from '../engine/roller.js';
 import MonsterGenerator from "./monster-generator.js";
 import ItemGenerator from "./item-generator.js";
 import FeatureGenerator from "./feature-generator.js";
+import World from "../models/world.js";
 
 let PlaceGenerator = {
 
@@ -14,15 +15,24 @@ let PlaceGenerator = {
         if(borderPlace1==null && borderPlace2==null) {
             return new Place('Strange blue meadow', 'meadow', 'blue', 'You are in a strange blue meadow', location, null, null, FeatureGenerator.generateEntity());
         }
-        const feature = FeatureGenerator.generateEntityWithProbability();
-        const description = this.generatePlaceDescription(borderPlace1,borderPlace2);
-        const name = this.adjective + ' ' + this.biome;
-        let items = ItemGenerator.generateEntities();
-        let monsters = MonsterGenerator.generateEntities();
-        return new Place(name, this.biome, this.plantColor, description, location, items, monsters, feature);
+        this.pickBiomeAndColor(borderPlace1,borderPlace2)
+        return this.generatePlaceByBiome(this.biome,this.plantColor, location)
     },
 
-    generatePlaceDescription(borderPlace1,borderPlace2) {
+    generatePlaceByBiome(biome, plantColor, location){
+        const description = this.getPlaceDescription(biome,plantColor);
+        const feature = FeatureGenerator.generateEntityWithProbability();
+        if(feature && feature.place) {
+            feature.place.location = [1, location[1],  location[2]];
+            World.locations[1][location[1]][location[2]] = feature.place;
+        }
+        const name = this.adjective + ' ' + biome;
+        let items = ItemGenerator.generateEntities();
+        let monsters = MonsterGenerator.generateEntities();
+        return new Place(name, biome, plantColor, description, location, items, monsters, feature);
+    },
+
+    pickBiomeAndColor(borderPlace1,borderPlace2){
         if (borderPlace1!=null && borderPlace2 != null) {
             this.biome = roller.pickFromTable(this.biomes, borderPlace1.biome, borderPlace2.biome);
             this.plantColor = roller.pickFromTable(this.plantColors, borderPlace1.plantColor, borderPlace2.plantColor);
@@ -30,19 +40,31 @@ let PlaceGenerator = {
             this.biome = roller.pickFromTable(this.biomes, borderPlace1!=null ? borderPlace1.biome : borderPlace2.biome);
             this.plantColor = roller.pickFromTable(this.plantColors, borderPlace1!=null ? borderPlace1.plantColor : borderPlace2.plantColor);
         }
+    },
 
-        let biomePart = this.plantColor + ' ' + this.biome;
-        if (this.biome == 'desert') {
+    getPlaceDescription(biome,plantColor) {
+        let biomePart = plantColor + ' ' + biome;
+        if (biome == 'desert') {
             biomePart = 'desert. Whitish yellow sand is all around You'
         }
-        if (this.biome == 'mountain') {
+        if (biome == 'mountain') {
             biomePart = 'high mountains. Naked rocks and resilient lichen surrounds You'
+        }
+        if (biome == 'hut') {
+            biomePart = 'hut. Shelfs with pottery and dried herbs covers the walls'
+        }
+        if (biome == 'ruin') {
+            biomePart = 'ruins. Crumbled walls and webbings surrands you'
+        }
+        if (biome == 'cave') {
+            biomePart = 'cave. Narrow corridor leads to single room'
         }
 
         this.adjective = roller.pickAtRandom(this.adjectives);
 
         return `A ${this.adjective} ${biomePart}.`;
     }
+
 }
 
 export default PlaceGenerator;
