@@ -1,5 +1,7 @@
 import Judge from "./Judge.js";
 import World from "../models/world.js";
+import Shop from "../models/shop.js";
+import chalk from "chalk";
 
 let Action = {
 
@@ -65,7 +67,7 @@ let Action = {
         place.describeThySelf();
     },
 
-    i(args, player, place) { console.log(player.items); },
+    i(args, player, place) { console.log(player.items); console.log(`${chalk.yellow(player.money)} imperial coins`) },
 
     stats(args, player, place) {
         switch(args.join(' ')) {
@@ -97,6 +99,10 @@ let Action = {
 
     drop(args, player, place) { player.drop(args.join(' ')); },
 
+    async buy(args, player, place) { if(place.feature instanceof Shop) { await place.feature.initiateTrade(player,place.feature.inventory,'buy')} },
+
+    async sell(args, player, place) { if(place.feature instanceof Shop) { await place.feature.initiateTrade(player,player.items,'sell')} },
+
     help() {
         console.log('n, e, w, s - travel commands');
         console.log('attack - or just a will attack the closest enemy');
@@ -106,6 +112,7 @@ let Action = {
         console.log('i - display inventory');
         console.log('p - stands for pick up all, pm - pick up money');
         console.log('equip item name - to equip item from inventory, drop item name - to drop inventory item');
+        console.log('buy and sell invoke shop interface');
         console.log('wait - waits in place... for healing mostly')
     },
 }

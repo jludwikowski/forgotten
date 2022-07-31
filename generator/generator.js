@@ -18,6 +18,11 @@ class Generator {
 
     generateEntity(){
         let type = roller.pickAtRandom(this.types);
+        return this.generateEntityByTypes([type]);
+    }
+
+    generateEntityByTypes(types){
+        let type = roller.pickAtRandom(types);
         let entity = this.statsObject[type]();
         let adjectives = []
         this.adjectivesTables.forEach(adjectiveTable => adjectives.push(adjectiveTable.getAdjective()));

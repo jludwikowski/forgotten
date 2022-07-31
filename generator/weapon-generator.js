@@ -19,6 +19,6 @@ let adjectivesTable = [new Adjectives(10,magicAdjectives),new Adjectives(10,adva
 let woodMaterialsTable = [new Adjectives(1,epicWoodMaterials), new Adjectives(5,advancedWoodMaterials), new Adjectives(100,ordinaryWoodMaterials)];
 let metalMaterialsTable = [new Adjectives(1,epicMetalMaterials), new Adjectives(5,advancedMetalMaterials), new Adjectives(100,ordinaryMetalMaterials)];
 
-let WeaponGenerator = new MaterialItemGenerator(10, types, adjectivesTable, [woodMaterialsTable,metalMaterialsTable], ['staff','bow'], WeaponStats);
+let WeaponGenerator = new MaterialItemGenerator(85, types, adjectivesTable, [woodMaterialsTable,metalMaterialsTable], ['staff','bow'], WeaponStats);
 
 export default WeaponGenerator;

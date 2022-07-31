@@ -14,11 +14,15 @@ class Place extends Entity {
         this.impassable = false;
         this.items = items,
         this.monsters = monsters,
-        this.money = 0
+        this.money = 0,
+        this.feature = null
     }
 
     describeThySelf() {
         console.log(this.description);
+        if(this.feature) {
+            console.log('There is ' + this.feature.description + ' here.');
+        }
         if(this.monsters) {
             for (const monster of this.monsters) { console.log(`You see a ${chalk.redBright(monster.description)}`) }
         }

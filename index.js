@@ -6,6 +6,7 @@ import Player from "./models/player.js";
 import Weapon from "./models/weapon.js";
 import CharacterCreator from "./engine/character-creator.js";
 import Action from "./engine/action.js";
+import Shop from "./models/shop.js";
 
 let player;
 
@@ -33,6 +34,8 @@ async function customizeMap(player){
     let rustySword = new Weapon('old sword','old sword',1.5,10,2,3);
     World.getPlace(player.location).items.push(rustySword);
     World.getPlace(player.location).monsters = [];
+    World.getPlace(player.location).money = 100;
+    World.getPlace(player.location).feature = new Shop();
     World.getPlace(player.location).describeThySelf();
 }
 

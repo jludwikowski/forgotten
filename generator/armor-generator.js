@@ -19,6 +19,6 @@ let adjectivesTable = [new Adjectives(10,magicAdjectives),new Adjectives(10,adva
 let leatherMaterialsTable = [new Adjectives(1,epicLeatherMaterials), new Adjectives(5,advancedLeatherMaterials), new Adjectives(100,ordinaryLeatherMaterials)];
 let metalMaterialsTable = [new Adjectives(1,epicMetalMaterials), new Adjectives(5,advancedMetalMaterials), new Adjectives(100,ordinaryMetalMaterials)];
 
-let ArmorGenerator = new MaterialItemGenerator(10, types, adjectivesTable, [leatherMaterialsTable,metalMaterialsTable], ['leather'], ArmorStats);
+let ArmorGenerator = new MaterialItemGenerator(85, types, adjectivesTable, [leatherMaterialsTable,metalMaterialsTable], ['leather'], ArmorStats);
 
 export default ArmorGenerator;
