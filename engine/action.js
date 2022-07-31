@@ -111,9 +111,9 @@ let Action = {
 
     exit(args, player, place) { player.location = this.lastLocation; World.getPlace(player.location).describeThySelf(); },
 
-    async buy(args, player, place) { if(place.feature instanceof Shop) { await place.feature.initiateTrade(player,place.feature.inventory,'buy')} },
+    async buy(args, player, place) { if(place.feature instanceof Shop) { await place.feature.initiateTrade(place.feature, player,'buy')} },
 
-    async sell(args, player, place) { if(place.feature instanceof Shop) { await place.feature.initiateTrade(player,player.items,'sell')} },
+    async sell(args, player, place) { if(place.feature instanceof Shop) { await place.feature.initiateTrade(player,place.feature,'sell')} },
 
     help() {
         console.log('n, e, w, s - travel commands');
