@@ -5,7 +5,7 @@ import Entity from "./entity.js";
 
 class Place extends Entity {
 
-    constructor(name, biome, plantColor, description, location, items, monsters) {
+    constructor(name, biome, plantColor, description, location, items, monsters, feature) {
         super(name, description)
         this.identity = 'place',
         this.biome = biome,
@@ -15,7 +15,7 @@ class Place extends Entity {
         this.items = items,
         this.monsters = monsters,
         this.money = 0,
-        this.feature = null
+        this.feature = feature
     }
 
     describeThySelf() {

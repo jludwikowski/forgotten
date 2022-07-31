@@ -2,6 +2,7 @@ import Place from '../models/place.js';
 import roller from '../engine/roller.js';
 import MonsterGenerator from "./monster-generator.js";
 import ItemGenerator from "./item-generator.js";
+import FeatureGenerator from "./feature-generator.js";
 
 let PlaceGenerator = {
 
@@ -11,16 +12,14 @@ let PlaceGenerator = {
 
     generatePlace(borderPlace1, borderPlace2, location) {
         if(borderPlace1==null && borderPlace2==null) {
-            return new Place('Strange blue meadow', 'meadow', 'blue', 'You are in a strange blue meadow', location, null, null);
+            return new Place('Strange blue meadow', 'meadow', 'blue', 'You are in a strange blue meadow', location, null, null, FeatureGenerator.generateEntity());
         }
-
+        const feature = FeatureGenerator.generateEntityWithProbability();
         const description = this.generatePlaceDescription(borderPlace1,borderPlace2);
         const name = this.adjective + ' ' + this.biome;
         let items = ItemGenerator.generateEntities();
         let monsters = MonsterGenerator.generateEntities();
-        console.log('MONSTERS');
-        console.log(monsters);
-        return new Place(name, this.biome, this.plantColor, description, location, items, monsters);
+        return new Place(name, this.biome, this.plantColor, description, location, items, monsters, feature);
     },
 
     generatePlaceDescription(borderPlace1,borderPlace2) {

@@ -1,14 +1,13 @@
-import Entity from './entity.js';
 import Npc from './npc.js';
 import MonsterGenerator from '../generator/monster-generator.js'
 import WeaponGenerator from "../generator/weapon-generator.js";
 import ArmorGenerator from "../generator/armor-generator.js";
 import inquirer from "inquirer";
+import Feature from "./feature.js";
 
-class Shop extends Entity{
+class Shop extends Feature {
     constructor() {
-        super(),
-        this.description = this.name = "Small shop selling weapons and armors",
+        super('Small shop selling weapons and armors','Small shop selling weapons and armors'),
         this.shopkeeper = MonsterGenerator.generateEntityByTypes(['human','elf','orc']),
         this.inventory = WeaponGenerator.generateEntities().concat(ArmorGenerator.generateEntities())
     }

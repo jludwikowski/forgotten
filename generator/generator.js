@@ -16,6 +16,12 @@ class Generator {
         return entities;
     }
 
+    generateEntityWithProbability() {
+        if(roller.roll()<this.entityProbability) {
+            return this.generateEntity();
+        }
+    }
+
     generateEntity(){
         let type = roller.pickAtRandom(this.types);
         return this.generateEntityByTypes([type]);
