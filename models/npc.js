@@ -20,6 +20,7 @@ class Npc extends Monster {
     }
 
     async askForItem(inventory) {
+        console.log(inventory);
         let inventoryNames = inventory.map(item => item.name);
         const answer = await inquirer.prompt({
             name: 'item',

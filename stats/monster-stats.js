@@ -52,6 +52,17 @@ let MonsterStats = {
     demonic() { return new Monster('demonic', 'demonic', new Attributes(1, 1, 2, 1,0,1,1,1,0,2,0), null, null, null, 0, 4) },
     spirit() { return new Monster('spirit', 'spirit', new Attributes(0, 1, 0, 3,3,1,3,2,2,2,0), null, null, null, 0, 4) },
     skeletal() { return new Monster('skeletal', 'skeletal', new Attributes(0, 4, 2, -1,-1,-1,-1,0,0,0,0), null, null, null, 0, 2) },
+
+    /*traits*/
+    strong() { return new Monster(null, null, new Attributes(0, 0, 1, 0,0,0,0,0,0,0,0), null, null, null, 0, 1) },
+    'very strong'() { return new Monster(null, null, new Attributes(0, 0, 1, 0,0,0,0,0,0,0,0), null, null, null, 0, 1) },
+    quick() { return new Monster(null, null, new Attributes(0, 0, 0, 0,1,0,0,0,0,0,0), null, null, null, 0, 1) },
+    agile() { return new Monster(null, null, new Attributes(0, 0, 1, 1,0,0,0,0,0,0,0), null, null, null, 0, 1) },
+    'very quick'() { return new Monster(null, null, new Attributes(0, 0, 0,0,1,0,0,0,0,0,0), null, null, null, 0, 1) },
+    'very agile'() { return new Monster(null, null, new Attributes(0, 0, 0, 1,0,0,0,0,0,0,0), null, null, null, 0, 1) },
+    tough() { return new Monster(null, null, new Attributes(0, 1, 0, 0,0,0,0,0,0,0,0), null, null, null, 0, 1) },
+    'very tough'() { return new Monster(null, null, new Attributes(0, 1, 0, 0,0,0,0,0,0,0,0), null, null, null, 0, 1) },
+    lucky() { return new Monster(null, null, new Attributes(0, 0, 0, 0,0,0,0,1,1,1,0), null, null, null, 0, 1) },
 }
 
 export default MonsterStats;

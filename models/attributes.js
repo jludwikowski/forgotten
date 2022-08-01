@@ -35,6 +35,10 @@ class Attributes {
         }
     }
 
+    update() {
+        this.maxHP = this.body*5+5+this.size*2;
+    }
+
     show() {
         console.log(this);
     }

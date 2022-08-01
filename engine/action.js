@@ -115,6 +115,8 @@ let Action = {
 
     async sell(args, player, place) { if(place.feature instanceof Shop) { await player.initiateTrade(place.feature.shopkeeper)} },
 
+    async levelup(args, player, place) { await player.levelUp() },
+
     help() {
         console.log('n, e, w, s - travel commands');
         console.log('go strange cave, go small hut - makes you travel into building or cave, exit makes you go out');
@@ -126,7 +128,8 @@ let Action = {
         console.log('p - stands for pick up all, pm - pick up money');
         console.log('equip item name - to equip item from inventory, drop item name - to drop inventory item');
         console.log('buy and sell invoke shop interface');
-        console.log('wait - waits in place... for healing mostly')
+        console.log('wait - waits in place... for healing mostly');
+        console.log('levelup: to buy traits for EXP');
     },
 }
 

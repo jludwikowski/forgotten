@@ -3,6 +3,7 @@ import MonsterStats from "../stats/monster-stats.js";
 import Item from "./item.js";
 import Weapon from "./weapon.js";
 import Npc from "./npc.js";
+import inquirer from "inquirer";
 
 class Player extends Npc {
     constructor(name, description, race, location) {
@@ -25,6 +26,36 @@ class Player extends Npc {
             this.items.splice(index, 1);
         } else {
             console.log('Item not in inventory');
+        }
+    }
+
+    async askForTraits(traits) {
+        let traitList = traits.map(trait => trait.name + ':' + trait.price);
+        const answer = await inquirer.prompt({
+            name: 'trait',
+            type: 'list',
+            message: 'Which items you want to trade:',
+            choices: traitList.concat(['exit']),
+            default() {
+                return 'exit';
+            },
+        });
+        return answer.trait;
+    }
+
+    async levelUp(){
+        const difference = this.traisTable.filter( x => !this.traits.includes(x.name) );
+        const trait = await this.askForTraits(difference);
+        if(trait != 'exit') {
+            const traitArray = trait.split(":");
+            if (this.exp >= traitArray[1]) {
+                this.traits.push(traitArray[0]);
+                console.log(this.traits);
+                this.adjust(MonsterStats[traitArray[0]]());
+                this.exp -= traitArray[1];
+            } else {
+                console.log('Not enough EXP');
+            }
         }
     }
 

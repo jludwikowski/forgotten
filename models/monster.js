@@ -11,14 +11,24 @@ class Monster extends Entity{
         this.items = items,
         this.money = money,
         this.armor = armor,
-        this.exp = exp;
+        this.exp = exp,
+        this.traits = [],
+        this.traisTable = [
+            {name:'strong',price:1000},
+            {name:'very strong', price:2000},
+            {name:'quick',price:1000},
+            {name:'agile',price:1000},
+            {name:'very quick',price:2000},
+            {name:'very agile',price:2000},
+            {name:'tough',price:1000},
+            {name:'very tough',price:2000},
+            {name:'lucky',price:1000}]
     }
 
     adjust(monster) {
         this.name = monster.name? monster.name + ' ' + this.name: this.name;
         this.description = monster.description? monster.description + ' ' + this.description: this.description;
         this.attributes.adjust(monster.attributes);
-        let original = this.exp;
         this.exp = monster.exp? this.exp*monster.exp : this.exp;
     }
 
