@@ -6,7 +6,7 @@ import Weapon from "./weapon.js";
 class Player extends Monster {
     constructor(name, description, race, location) {
         let BoilerPlate = MonsterStats[race]();
-        let items = [new Item('coin','small copper coin',0.1,1)];
+        let items = [new Item('mysterious coin','small weird copper coin',0.1,1)];
         let mainWeapon = new Weapon('rusty sword', 'rusty sword', 1.4, 0, 3,5);
         super(name, description, BoilerPlate.attributes, items, mainWeapon, null, 0);
         this.exp = 0;
@@ -15,6 +15,7 @@ class Player extends Monster {
 
     showStats() {
         this.attributes.show();
+        console.log('EXP: ' + this.exp);
     }
 
     findItem(name) {

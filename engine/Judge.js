@@ -36,6 +36,7 @@ let Judge = {
         let lastMonster = monsters[monsters.length-1];
         if(lastMonster.attributes.currentHP < 0) {
             this.monsterDrop(lastMonster,place);
+            player.exp += lastMonster.exp;
             monsters.pop();
         }
         for (const monster of monsters) {
