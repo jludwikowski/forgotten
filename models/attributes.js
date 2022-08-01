@@ -1,6 +1,6 @@
 class Attributes {
 
-    constructor(size, body, strength, agility, reflex, intellect, willpower, melee, ranged, spellcasting, naturalArmor) {
+    constructor(size, body, strength, agility, reflex, intellect, willpower, melee, ranged, spellcasting, naturalArmor, haggling) {
         this.size = size,
         this.body = body,
         this.strength = strength,
@@ -13,7 +13,8 @@ class Attributes {
         this.spellcasting = spellcasting
         this.maxHP = this.body*5+5+this.size*2,
         this.currentHP = this.maxHP,
-        this.naturalArmor = naturalArmor ? naturalArmor : 0
+        this.naturalArmor = naturalArmor ? naturalArmor : 0,
+        this.haggling = haggling? haggling : 0
     }
 
     adjust(adjustAttributes) {

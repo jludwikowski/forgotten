@@ -2,30 +2,21 @@ import Monster from "./monster.js";
 import MonsterStats from "../stats/monster-stats.js";
 import Item from "./item.js";
 import Weapon from "./weapon.js";
+import Npc from "./npc.js";
 
-class Player extends Monster {
+class Player extends Npc {
     constructor(name, description, race, location) {
         let BoilerPlate = MonsterStats[race]();
         let items = [new Item('mysterious coin','small weird copper coin',0.1,1)];
         let mainWeapon = new Weapon('rusty sword', 'rusty sword', 1.4, 0, 3,5);
-        super(name, description, BoilerPlate.attributes, items, mainWeapon, null, 0);
-        this.exp = 0;
+        let monster = new Monster(name, description, BoilerPlate.attributes, items, mainWeapon, null, 0, 0);
+        super(monster);
         this.location = location;
     }
 
     showStats() {
         this.attributes.show();
         console.log('EXP: ' + this.exp);
-    }
-
-    findItem(name) {
-        if(this.items!=null) {
-            const index = this.items.findIndex(item => {
-                return item.name === name;
-            });
-            return index;
-        }
-        return -1;
     }
 
     drop(name) {
