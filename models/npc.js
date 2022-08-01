@@ -36,8 +36,8 @@ class Npc extends Monster {
     async initiateTrade(buyer){
         const itemName = await this.askForItem(this.items);
         const index = this.findItem(itemName);
-        const price = this.getItemPrice(this.items[index], this, buyer)
         if(index != -1) {
+            const price = this.getItemPrice(this.items[index], this, buyer)
             if (buyer.money > price) {
                 buyer.items.push(this.items[index]);
                 buyer.money -= price;
