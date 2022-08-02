@@ -21,11 +21,7 @@ let CharacterCreator = {
             name: 'race',
             type: 'list',
             message: 'Choose your race:',
-            choices: [
-                'human',
-                'elf',
-                'orc',
-            ],
+            choices: [ 'human', 'elf', 'orc', 'goblin', 'dwarf', 'draconid', 'cat-folk' ],
             default() {
                 return 'human';
             },

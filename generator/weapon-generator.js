@@ -4,7 +4,7 @@ import MaterialItemGenerator from "./material-item-generator.js";
 
 let types = ['sword','axe','spear','bow','dagger','mace','staff'];
 let adjectives = ['old','weathered','new','strange','dangerous','exceptional','elf-crafted'];
-let advancedAdjectives = ['master-crafted'];
+let advancedAdjectives = ['master-crafted','runic'];
 let magicAdjectives = ['fire','ice','electric','holy','demonic'];
 
 let ordinaryMetalMaterials = ['iron','steel','bronze'];

@@ -11,6 +11,8 @@ let ItemStats = {
     coat() { return new Item('coat','coat',1.6,10)},
     elixir() { return new Item('elixir','elixir',0.3,40,true) },
     'raw meat'() { return new Item('raw meat','raw meat',1,3,true) },
+    'bug meat'() { return new Item('bug meat','bug meat',1,1,true) },
+    'roasted bug'() { return new Item('roasted bug','roasted bug',1,1,true) },
     'roasted meat'() { return new Item('roasted meat','roasted meat',0.7,10,true) },
     pelt() { return new Item('pelt','pelt',2,12) },
 

@@ -4,7 +4,7 @@ import ArmorStats from "../stats/armor-stats.js";
 
 let types = ['leather','chain','segment','plate','scale'];
 let adjectives = ['old','weathered','new','strange','exceptional','elf-crafted'];
-let advancedAdjectives = ['master-crafted'];
+let advancedAdjectives = ['master-crafted','runic'];
 let magicAdjectives = ['holy','demonic'];
 
 let ordinaryMetalMaterials = ['iron','steel','bronze'];

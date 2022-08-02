@@ -4,6 +4,7 @@ import Item from "./item.js";
 import Weapon from "./weapon.js";
 import Npc from "./npc.js";
 import inquirer from "inquirer";
+import ItemGenerator from "../generator/item-generator.js";
 
 class Player extends Npc {
     constructor(name, description, race, location) {
@@ -126,8 +127,24 @@ class Player extends Npc {
             const item = this.items[index];
             switch(item.name) {
                 case 'roasted meat': this.hungerChange(-30);
+                case 'raw meat': this.hungerChange(-10);
+                case 'bug meat': this.hungerChange(+5);
+                case 'roasted bug': this.hungerChange(-20);
             }
             this.items.splice(index, 1);
+        }
+    }
+
+    roast() {
+        while(this.findItem('raw meat')!=-1) {
+            let index = this.findItem('raw meat');
+            this.items.splice(index, 1);
+            this.items.push(ItemGenerator.generateBasic('roasted meat'));
+        }
+        while(this.findItem('bug meat')!=-1) {
+            let index = this.findItem('bug meat');
+            this.items.splice(index, 1);
+            this.items.push(ItemGenerator.generateBasic('roasted bug'));
         }
     }
 

@@ -17,6 +17,7 @@ let WeaponStats = {
     exceptional() { return  new Weapon('exceptional','exceptional',1,+5,+1,3)},
     'elf-crafted'() { return  new Weapon('elf-crafted','elf-crafted',0.8,+3,0,5)},
     'master-crafted'() { return  new Weapon('master-crafted','master-crafted',1,+10,+1,10)},
+    runic() { return  new Weapon('runic','runic',1,+5,+2,10)},
     fire() { return  new Weapon('fire','fire',1,0,+2,10)},
     ice() { return  new Weapon('ice','ice',1,+5,+1,8)},
     electric() { return  new Weapon('electric','electric',1,+5,+1,8)},

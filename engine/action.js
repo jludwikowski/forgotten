@@ -127,17 +127,7 @@ let Action = {
 
     fire(args, player, place) { if(player.findItem('flint')!=-1) { place.items.push(new Item('fire','campfire','10',0)) } },
 
-    roast(args, player, place) {
-        if(place.findItem('fire')!=-1) {
-            while(player.findItem('raw meat')!=-1) {
-                let index = player.findItem('raw meat');
-                player.items.splice(index, 1);
-                player.items.push(ItemGenerator.generateBasic('roasted meat'));
-            }
-        } else {
-            console.log(`${chalk.yellow('No fire to roast')}`)
-        }
-    },
+    roast(args, player, place) { if(place.findItem('fire')!=-1) { player.roast() } else { console.log(`${chalk.yellow('No fire to roast')}`) } },
 
     use(args, player, place) { player.use(args.join(' '), place) },
 
