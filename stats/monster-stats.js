@@ -12,23 +12,44 @@ let MonsterStats = {
     },
     orc() {
         return new Monster('orc', 'orc', new Attributes(3, 4, 3, 2,2,2,2,20,5,5,0),
-        ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(20), 30)
+            ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(20), 30)
     },
     ogre() {
         return new Monster('ogre', 'ogre', new Attributes(5, 8, 6, 1,1,1,1,15,5,0,1),
-        ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(20), 100)
+            ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(20), 100)
     },
     slime() {
         return new Monster('slime', 'slime', new Attributes(2, 8, 1, 1,1,1,1,5,0,0,1),
-        ItemGenerator.generateEntities().concat(WeaponGenerator.generateEntityWithProbability()).concat(ArmorGenerator.generateEntityWithProbability()), null, null, roller.rollDice(10), 20)
+            ItemGenerator.generateEntities().concat(WeaponGenerator.generateEntityWithProbability()).concat(ArmorGenerator.generateEntityWithProbability()), null, null, roller.rollDice(10), 20)
     },
-    wolf() { return new Monster('wolf', 'wolf', new Attributes(2, 3, 2, 4,4,1,2,25,0,0,1), null, null, null, 0, 20) },
-    spider() { return new Monster('spider', 'spider', new Attributes(2, 3, 1, 5, 5,0,0,15,15,0,3), null, null, null, 0, 40) },
-    lizard() { return new Monster('lizard', 'lizard', new Attributes(3, 4, 2, 2,5,0,0,10,0,0,1), null, null, null, 0, 15) },
-    boar() { return new Monster('boar', 'boar', new Attributes(4, 7, 3, 1,3,1,2,20,0,0,1), null, null, null, 0, 50) },
-    rat() { return new Monster('rat', 'rat', new Attributes(0, 1, 0, 2,2,1,1,15,0,0,0), null, null, null, 0, 5) },
-    bear() { return new Monster('bear', 'bear', new Attributes(6, 10, 7, 3,2,1,2,20,0,0,1), null, null, null, 0, 200) },
-    dragon() { return new Monster('dragon', 'dragon', new Attributes(10, 30, 12, 5, 3,3,4,40,50,30,10), null, null, null, 0, 2000) },
+    wolf() {
+        return new Monster('wolf', 'wolf', new Attributes(2, 3, 2, 4,4,1,2,25,0,0,1),
+            [ItemGenerator.generateBasic('raw meat'), ItemGenerator.generateBasic('pelt')], null, null, 0, 20)
+    },
+    spider() {
+        return new Monster('spider', 'spider', new Attributes(2, 3, 1, 5, 5,0,0,15,15,0,3),
+            [ItemGenerator.generateBasic('raw meat')], null, null, 0, 40)
+    },
+    lizard() {
+        return new Monster('lizard', 'lizard', new Attributes(3, 4, 2, 2,5,0,0,10,0,0,1),
+            [ItemGenerator.generateBasic('raw meat')], null, null, 0, 15)
+    },
+    boar() {
+        return new Monster('boar', 'boar', new Attributes(4, 7, 3, 1,3,1,2,20,0,0,1),
+            [ItemGenerator.generateBasic('raw meat'), ItemGenerator.generateBasic('pelt')], null, null, 0, 50)
+    },
+    rat() {
+        return new Monster('rat', 'rat', new Attributes(0, 1, 0, 2,2,1,1,15,0,0,0),
+            [ItemGenerator.generateBasic('raw meat')], null, null, 0, 5)
+    },
+    bear() {
+        return new Monster('bear', 'bear', new Attributes(6, 10, 7, 3,2,1,2,20,0,0,1),
+            [ItemGenerator.generateBasic('raw meat'), ItemGenerator.generateBasic('raw meat'), ItemGenerator.generateBasic('pelt'), ItemGenerator.generateBasic('pelt')], null, null, 0, 200)
+    },
+    dragon() {
+        return new Monster('dragon', 'dragon', new Attributes(10, 30, 12, 5, 3,3,4,40,50,30,10),
+            [ItemGenerator.generateBasic('raw meat')], null, null, 0, 2000)
+    },
     human() {
         return new Monster('human bandit', 'human bandit', new Attributes(2, 3, 1, 3,2,2,2,15,15,15,0),
         ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(20), 30)
@@ -63,6 +84,10 @@ let MonsterStats = {
     tough() { return new Monster(null, null, new Attributes(0, 1, 0, 0,0,0,0,0,0,0,0), null, null, null, 0, 1) },
     'very tough'() { return new Monster(null, null, new Attributes(0, 1, 0, 0,0,0,0,0,0,0,0), null, null, null, 0, 1) },
     lucky() { return new Monster(null, null, new Attributes(0, 0, 0, 0,0,0,0,1,1,1,0), null, null, null, 0, 1) },
+
+    hungry() { return new Monster(null, null, new Attributes(0, 0, -1, -1,-1,0,0,0,0,0,0), null, null, null, 0, 1) },
+    'very hungry'() { return new Monster(null, null, new Attributes(0, 0, -2, -2,-2,0,0,0,0,0,0), null, null, null, 0, 1) },
+    sated() { return new Monster(null, null, new Attributes(0, 0, 1, 1,1,0,0,0,0,0,0), null, null, null, 0, 1) },
 }
 
 export default MonsterStats;

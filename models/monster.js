@@ -32,6 +32,10 @@ class Monster extends Entity{
         this.exp = monster.exp? this.exp*monster.exp : this.exp;
     }
 
+    reverse(monster) {
+        this.attributes.reverse(monster.attributes);
+    }
+
     getAttack(type) {
         let weaponAttack = (this.mainWeapon) ? this.mainWeapon.attackBonus : 0;
         let naturalAttack = (type == 'ranged')? this.attributes.agility*4 + this.attributes.ranged: this.attributes.agility*2 + this.attributes.strength*2 + this.attributes.melee;

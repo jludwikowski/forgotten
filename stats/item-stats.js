@@ -9,6 +9,10 @@ let ItemStats = {
     tunic() { return new Item('tunic','tunic',1.2,6)},
     pan() { return new Item('pan','pan',2.2,4)},
     coat() { return new Item('coat','coat',1.6,10)},
+    elixir() { return new Item('elixir','elixir',0.3,40,true) },
+    'raw meat'() { return new Item('raw meat','raw meat',1,3,true) },
+    'roasted meat'() { return new Item('roasted meat','roasted meat',0.7,10,true) },
+    pelt() { return new Item('pelt','pelt',2,12) },
 
     old() { return new Item('old','old',0.8,0.5)},
     weathered() { return new Item('weathered','weathered',0.9,0.6)},

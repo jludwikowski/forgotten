@@ -30,9 +30,30 @@ class Attributes {
             this.ranged += adjustAttributes.ranged;
             this.spellcasting += adjustAttributes.spellcasting;
             this.naturalArmor = adjustAttributes.naturalArmor? this.naturalArmor + adjustAttributes.naturalArmor: this.naturalArmor;
-            this.maxHP = this.body*5+5+this.size*2,
-            this.currentHP = this.maxHP
+            this.update();
         }
+    }
+
+    reverse(adjustAttributes) {
+        if (adjustAttributes != null) {
+            this.size -= adjustAttributes.size;
+            this.body -= adjustAttributes.body;
+            this.strength -= adjustAttributes.strength;
+            this.agility -= adjustAttributes.agility;
+            this.reflex -= adjustAttributes.reflex;
+            this.intellect -= adjustAttributes.intellect;
+            this.willpower -= adjustAttributes.willpower;
+            this.melee -= adjustAttributes.melee;
+            this.ranged -= adjustAttributes.ranged;
+            this.spellcasting -= adjustAttributes.spellcasting;
+            this.naturalArmor = adjustAttributes.naturalArmor? this.naturalArmor - adjustAttributes.naturalArmor: this.naturalArmor;
+            this.update();
+        }
+    }
+
+    updateHealth() {
+        this.update()
+        this.currentHP = this.maxHP
     }
 
     update() {

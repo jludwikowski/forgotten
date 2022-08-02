@@ -2,6 +2,9 @@ import Judge from "./Judge.js";
 import World from "../models/world.js";
 import Shop from "../models/shop.js";
 import chalk from "chalk";
+import MonsterStats from "../stats/monster-stats.js";
+import Item from "../models/item.js";
+import ItemGenerator from "../generator/item-generator.js";
 
 let Action = {
 
@@ -9,6 +12,11 @@ let Action = {
 
     parseCommand(command){
         return command.split(/(\s+)/).filter( e => e.trim().length > 0);
+    },
+
+    timePassed(player, place) {
+        this.monstersActions(player, place);
+        player.hungerChange(1);
     },
 
     directionActions: {
@@ -34,7 +42,7 @@ let Action = {
     directionCommand(player, place, direction, action) {
         let newLocation =  World.getLocation(player.location,direction);
         if (World.canTravel(player.location, newLocation)) {
-            this.monstersActions(player, place);
+            this.timePassed(player, place);
             this.directionActions[action](newLocation, player)
         }
     },
@@ -58,7 +66,7 @@ let Action = {
     attack(args, player, place) {
         if(place.monsters && place.monsters.length>0) {
             Judge.resolvePlayerAttack(player, place.monsters, place);
-            this.monstersActions(player, place);
+            this.timePassed(player, place);
         }
     },
 
@@ -79,7 +87,7 @@ let Action = {
     },
 
     wait(args, player, place) {
-        this.monstersActions(player, place);
+        this.timePassed(player, place);
     },
 
     p(args, player, place) {
@@ -89,7 +97,7 @@ let Action = {
             }
         }
         this.pm(args, player, place)
-        this.monstersActions(player, place);
+        this.timePassed(player, place);
     },
 
     pm(args, player, place) {
@@ -97,7 +105,7 @@ let Action = {
         place.money = 0;
     },
 
-    equip(args, player, place) { player.equip(args.join(' ')); this.monstersActions(player, place); },
+    equip(args, player, place) { player.equip(args.join(' ')); this.timePassed(player, place); },
 
     drop(args, player, place) { player.drop(args.join(' ')); },
 
@@ -111,11 +119,27 @@ let Action = {
 
     exit(args, player, place) { player.location = this.lastLocation; World.getPlace(player.location).describeThySelf(); },
 
-    async buy(args, player, place) { if(place.feature instanceof Shop) { await place.feature.shopkeeper.initiateTrade(player)} },
+    async buy(args, player, place) { if(place.feature instanceof Shop) { await place.feature.shopkeeper.initiateTrade(player); this.timePassed(player, place)} },
 
-    async sell(args, player, place) { if(place.feature instanceof Shop) { await player.initiateTrade(place.feature.shopkeeper)} },
+    async sell(args, player, place) { if(place.feature instanceof Shop) { await player.initiateTrade(place.feature.shopkeeper); this.timePassed(player, place)} },
 
     async levelup(args, player, place) { await player.levelUp() },
+
+    fire(args, player, place) { if(player.findItem('flint')!=-1) { place.items.push(new Item('fire','campfire','10',0)) } },
+
+    roast(args, player, place) {
+        if(place.findItem('fire')!=-1) {
+            while(player.findItem('raw meat')!=-1) {
+                let index = player.findItem('raw meat');
+                player.items.splice(index, 1);
+                player.items.push(ItemGenerator.generateBasic('roasted meat'));
+            }
+        } else {
+            console.log(`${chalk.yellow('No fire to roast')}`)
+        }
+    },
+
+    use(args, player, place) { player.use(args.join(' '), place) },
 
     help() {
         console.log('n, e, w, s - travel commands');
@@ -129,7 +153,10 @@ let Action = {
         console.log('equip item name - to equip item from inventory, drop item name - to drop inventory item');
         console.log('buy and sell invoke shop interface');
         console.log('wait - waits in place... for healing mostly');
-        console.log('levelup: to buy traits for EXP');
+        console.log('levelup - to buy traits for EXP');
+        console.log('fire - to create campfire');
+        console.log('roast - to roast all meat over fire');
+        console.log('use - to use item or eat food');
     },
 }
 

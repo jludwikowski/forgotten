@@ -21,7 +21,10 @@ let World = {
     },
 
     getPlace(location){
-        return this.locations[location[0]][location[1]][location[2]];
+        if(this.locations[location[0]] && this.locations[location[0]][location[1]]) {
+            return this.locations[location[0]][location[1]][location[2]];
+        }
+        return null;
     },
 
     getLocation(location,direction) {

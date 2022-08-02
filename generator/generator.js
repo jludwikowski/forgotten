@@ -35,7 +35,14 @@ class Generator {
         adjectives = adjectives.filter(adj => adj!=null);
         adjectives = this.getFinalAdjectivesTable(type, adjectives);
         adjectives.forEach(adjective => (adjective in this.statsObject) ? entity.adjust(this.statsObject[adjective]()) : entity.append(adjective));
+        if(entity.attributes) {
+            entity.attributes.updateHealth();
+        }
         return entity;
+    }
+
+    generateBasic(type) {
+        return this.statsObject[type]();
     }
 
     getFinalAdjectivesTable(type,adjectives) {

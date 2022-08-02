@@ -9,16 +9,6 @@ class Npc extends Monster {
 
     dialog = '(cheerfully) Welcome. Welcome';
 
-    findItem(name) {
-        if(this.items!=null) {
-            const index = this.items.findIndex(item => {
-                return item.name === name;
-            });
-            return index;
-        }
-        return -1;
-    }
-
     async askForItem(inventory) {
         let inventoryNames = inventory.map(item => item.name);
         const answer = await inquirer.prompt({
