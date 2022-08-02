@@ -9,8 +9,7 @@ class Player extends Npc {
     constructor(name, description, race, location) {
         let BoilerPlate = MonsterStats[race]();
         let items = [new Item('mysterious coin','small weird copper coin',0.1,1)];
-        let mainWeapon = new Weapon('rusty sword', 'rusty sword', 1.4, 0, 3,5);
-        let monster = new Monster(name, description, BoilerPlate.attributes, items, mainWeapon, null, 0, 0);
+        let monster = new Monster(name, description, BoilerPlate.attributes, items, null, null, 0, 0);
         super(monster);
         this.location = location;
     }
@@ -60,9 +59,9 @@ class Player extends Npc {
     }
 
     equip(name) {
+        let oldItem;
         const index = this.findItem(name);
         if(index != -1 && this.items[index].equipable) {
-            let oldItem
             if(this.items[index] instanceof Weapon) {
                 oldItem = this.mainWeapon;
                 this.mainWeapon = this.items[index];
@@ -71,7 +70,9 @@ class Player extends Npc {
                 this.armor = this.items[index];
             }
             this.items.splice(index, 1);
-            this.items.push(oldItem);
+            if(oldItem!=null) {
+                this.items.push(oldItem);
+            }
         } else {
             console.log('Not found or not equipable item')
         }
