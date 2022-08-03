@@ -2,9 +2,7 @@ import Judge from "./Judge.js";
 import World from "../models/world.js";
 import Shop from "../models/shop.js";
 import chalk from "chalk";
-import MonsterStats from "../stats/monster-stats.js";
 import Item from "../models/item.js";
-import ItemGenerator from "../generator/item-generator.js";
 
 let Action = {
 
@@ -16,7 +14,8 @@ let Action = {
 
     timePassed(player, place) {
         this.monstersActions(player, place);
-        player.hungerChange(1);
+        /* For time based resources  and not environment based */
+        player.survivalResources.hunger.change(1, player);
     },
 
     directionActions: {

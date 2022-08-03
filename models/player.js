@@ -5,6 +5,7 @@ import Weapon from "./weapon.js";
 import Npc from "./npc.js";
 import inquirer from "inquirer";
 import ItemGenerator from "../generator/item-generator.js";
+import SurvivalResource from "./survival-resource.js";
 
 class Player extends Npc {
     constructor(name, description, race, location) {
@@ -13,7 +14,8 @@ class Player extends Npc {
         let monster = new Monster(name, description, BoilerPlate.attributes, items, null, null, 0, 0);
         super(monster);
         this.location = location;
-        this.hunger = 0;
+        let hunger = new SurvivalResource('hunger',[{name: 'sated',level:0},{name:'fed',level:50},{name:'hungry',level:100},{name:'very hungry',level: 150}]);
+        this.survivalResources = {hunger: hunger};
     }
 
     showStats() {
@@ -21,6 +23,10 @@ class Player extends Npc {
         console.log('hunger: ' + this.hunger);
         console.log('EXP: ' + this.exp);
         console.log(this.traits);
+        for (const key in this.survivalResources) {
+            let elem = this.survivalResources[key];
+            console.log(elem.name + ':' + elem.resource);
+        }
     }
 
     drop(name) {
@@ -62,42 +68,18 @@ class Player extends Npc {
 
     addTrait(trait) {
         this.traits.push(trait);
-        this.adjust(MonsterStats[trait]());
+        if(trait in MonsterStats) {
+            this.adjust(MonsterStats[trait]());
+        }
     }
 
     removeTrait(trait) {
         const index = this.traits.findIndex(item => item === trait);
         if(index != -1) {
             this.traits.splice(index, 1);
-            this.reverse(MonsterStats[trait]());
-            console.log(this.traits);
-        }
-    }
-
-    hungerChange(value) {
-        this.hunger =  (this.hunger + value < -30) ? -30 : this.hunger + value;
-        if(this.hunger > 50 && this.hunger <100) {
-            if (!this.traits.includes('hungry')) {
-                this.addTrait('hungry');
-                this.removeTrait('very hungry');
-                this.removeTrait('sated');
+            if(trait in MonsterStats) {
+                this.reverse(MonsterStats[trait]());
             }
-        }
-        if(this.hunger < 0) {
-            if (!this.traits.includes('sated')) {
-                this.addTrait('sated');
-                this.removeTrait('very hungry');
-                this.removeTrait('hungry');
-            }
-        }
-        if(this.hunger > 100) {
-            if (!this.traits.includes('very hungry')) {
-                this.addTrait('very hungry');
-                this.removeTrait('sated');
-            }
-        }
-        if(this.hunger > 150) {
-            this.attributes.currentHP -=2;
         }
     }
 
@@ -126,10 +108,10 @@ class Player extends Npc {
         if(index != -1 && this.items[index].usable) {
             const item = this.items[index];
             switch(item.name) {
-                case 'roasted meat': this.hungerChange(-30);
-                case 'raw meat': this.hungerChange(-10);
-                case 'bug meat': this.hungerChange(+5);
-                case 'roasted bug': this.hungerChange(-20);
+                case 'roasted meat': this.survivalResources.hunger.change(-30, this);
+                case 'raw meat': this.survivalResources.hunger.change(-10, this);
+                case 'bug meat': this.survivalResources.hunger.change(+5, this);
+                case 'roasted bug': this.survivalResources.hunger.change(-20, this);
             }
             this.items.splice(index, 1);
         }
