@@ -15,7 +15,9 @@ class Player extends Npc {
         super(monster);
         this.location = location;
         let hunger = new SurvivalResource('hunger',[{name: 'sated',level:0},{name:'fed',level:50},{name:'hungry',level:100},{name:'very hungry',level: 150}]);
-        this.survivalResources = {hunger: hunger};
+        let thirst = new SurvivalResource('thirst',[{name:'quenched',level:30},{name:'thirsty',level:60},{name:'very thirsty',level: 90}],{name:'parched',level:110});
+        thirst.hurtLevel = 110;
+        this.survivalResources = {hunger: hunger,thirst: thirst};
     }
 
     showStats() {
@@ -108,12 +110,32 @@ class Player extends Npc {
         if(index != -1 && this.items[index].usable) {
             const item = this.items[index];
             switch(item.name) {
-                case 'roasted meat': this.survivalResources.hunger.change(-30, this);
-                case 'raw meat': this.survivalResources.hunger.change(-10, this);
-                case 'bug meat': this.survivalResources.hunger.change(+5, this);
-                case 'roasted bug': this.survivalResources.hunger.change(-20, this);
+                case 'roasted meat': this.survivalResources.hunger.change(-30, this); break;
+                case 'raw meat': this.survivalResources.hunger.change(-10, this); break;
+                case 'bug meat': this.survivalResources.hunger.change(+5, this); console.log('You vomited'); break;
+                case 'roasted bug': this.survivalResources.hunger.change(-20, this); break;
+                case 'waterskin':
+                    if(item.weight > 0.5) {
+                        this.survivalResources.thirst.change(-30, this);
+                        item.weight -= 0.5;
+                    } else {
+                        console.log('Not enough water');
+                    }
+                    break;
             }
-            this.items.splice(index, 1);
+            if(item.oneUse) {
+                this.items.splice(index, 1);
+            }
+        } else {
+            console.log('No such item');
+        }
+    }
+
+    refill(name) {
+        const index = this.findItem(name);
+        if(index != -1 && this.items[index].usable) {
+            const item = this.items[index];
+            item.weight = 2.1;
         }
     }
 

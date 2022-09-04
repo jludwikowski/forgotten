@@ -16,13 +16,14 @@ class SurvivalResource {
                 if(!player.traits.includes(elem.name)) {
                     this.traitsTable.forEach(trait => player.removeTrait(trait.name));
                     player.addTrait(elem.name);
-                    console.log(`${chalk.yellow('You are now:' + elem.name)}`);
+                    console.log(chalk.yellow('You are now:' + elem.name));
                 }
                 break;
             }
         }
         if(this.resource > this.hurtLevel){
             player.attributes.currentHP -= 2;
+            console.log(chalk.redBright('You took 2 ' + this.name + ' damage'));
         }
     }
 

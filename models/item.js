@@ -2,13 +2,14 @@ import Entity from "./entity.js";
 
 class Item extends Entity {
 
-    constructor(name, description, weight, price, usable) {
+    constructor(name, description, weight, price, usable, oneUse) {
         super(name,description);
         this.identity = 'item',
         this.weight = weight,
         this.price = price
         this.equipable = false;
         this.usable = usable;
+        this.oneUse = oneUse;
     }
 
     adjust(item){

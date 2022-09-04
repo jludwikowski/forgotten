@@ -34,6 +34,7 @@ async function mainAction(player) {
 async function customizeMap(player){
     let rustySword = new Weapon('old sword','old sword',1.5,10,2,3);
     player.items.push(new Item('flint','flint',0.4,10));
+    player.items.push(new Item('waterskin','waterskin', 2.1, 10, true));
     World.getPlace(player.location).items.push(rustySword);
     World.getPlace(player.location).monsters = [];
     World.getPlace(player.location).feature = new Shop();

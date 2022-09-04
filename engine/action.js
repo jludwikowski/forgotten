@@ -16,6 +16,8 @@ let Action = {
         this.monstersActions(player, place);
         /* For time based resources  and not environment based */
         player.survivalResources.hunger.change(1, player);
+        player.survivalResources.thirst.change(place.biome == 'desert'?2:1, player);
+        player.heal(1);
     },
 
     directionActions: {
@@ -35,7 +37,6 @@ let Action = {
         if(place.monsters && place.monsters.length>0) {
             Judge.resolveMonstersRound(player, place.monsters, place);
         }
-        player.heal(1);
     },
 
     directionCommand(player, place, direction, action) {
@@ -85,9 +86,7 @@ let Action = {
         }
     },
 
-    wait(args, player, place) {
-        this.timePassed(player, place);
-    },
+    wait(args, player, place) { this.timePassed(player, place) },
 
     p(args, player, place) {
         if(place.items!=null) {
@@ -116,7 +115,7 @@ let Action = {
         }
     },
 
-    exit(args, player, place) { player.location = this.lastLocation; World.getPlace(player.location).describeThySelf(); },
+    exit(args, player, place) { if(this.lastLocation) {player.location = this.lastLocation; World.getPlace(player.location).describeThySelf()} },
 
     async buy(args, player, place) { if(place.feature instanceof Shop) { await place.feature.shopkeeper.initiateTrade(player); this.timePassed(player, place)} },
 
@@ -128,7 +127,9 @@ let Action = {
 
     roast(args, player, place) { if(place.findItem('fire')!=-1) { player.roast() } else { console.log(`${chalk.yellow('No fire to roast')}`) } },
 
-    use(args, player, place) { player.use(args.join(' '), place) },
+    use(args, player, place) { player.use(args.join(' '), place); this.timePassed(player, place) },
+
+    refill(args, player, place) { if(place.feature && place.feature.name.indexOf('pond')!=-1) { player.refill(args.join(' ')) } },
 
     help() {
         console.log('n, e, w, s - travel commands');
@@ -145,7 +146,8 @@ let Action = {
         console.log('levelup - to buy traits for EXP');
         console.log('fire - to create campfire');
         console.log('roast - to roast all meat over fire');
-        console.log('use - to use item or eat food');
+        console.log('use - to use item or eat food or drink for example: use roasted meat');
+        console.log('refill - to refill container for example: refill waterskin');
     },
 }
 
