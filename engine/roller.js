@@ -13,6 +13,9 @@ let roller = {
         let borderIndex2 = table.indexOf(borderValue2);
         let randomRoll = this.roll();
         let jumpChance = 20;
+        if (borderValue == 'meadow' || borderValue == 'forest'){
+            jumpChance = 10;
+        }
         let baseBorderIndex =  borderIndex1;
         if(borderIndex2!=-1) {
             if(borderIndex1 == borderIndex2) {

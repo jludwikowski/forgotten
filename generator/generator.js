@@ -1,11 +1,12 @@
 import roller from "../engine/roller.js";
 
 class Generator {
-    constructor(entityProbability, types, adjectivesTables, statsObject) {
+    constructor(entityProbability, types, adjectivesTables, statsObject, biomeTypesTables) {
         this.entityProbability = entityProbability,
         this.adjectivesTables = adjectivesTables,
-        this.types = types
-        this.statsObject = statsObject;
+        this.types = types,
+        this.statsObject = statsObject,
+        this.biomeTypesTables = biomeTypesTables;
     }
 
     generateEntities(){
@@ -16,6 +17,17 @@ class Generator {
         return entities;
     }
 
+    generateEntitiesFromBiome(biome){
+        if(this.biomeTypesTables){
+            let entities=[];
+            while(roller.roll()<this.entityProbability){
+                entities.push(this.generateEntityFromBiome(biome))
+            }
+            return entities;
+        }
+        return this.generateEntities();
+    }
+
     generateEntityWithProbability() {
         if(roller.roll()<this.entityProbability) {
             return this.generateEntity();
@@ -24,6 +36,11 @@ class Generator {
 
     generateEntity(){
         let type = roller.pickAtRandom(this.types);
+        return this.generateEntityByTypes([type]);
+    }
+
+    generateEntityFromBiome(biome){
+        let type = roller.pickAtRandom(this.biomeTypesTables[biome]);
         return this.generateEntityByTypes([type]);
     }
 

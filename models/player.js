@@ -2,6 +2,7 @@ import Monster from "./monster.js";
 import MonsterStats from "../stats/monster-stats.js";
 import Item from "./item.js";
 import Weapon from "./weapon.js";
+import Armor from "./armor.js";
 import Npc from "./npc.js";
 import inquirer from "inquirer";
 import ItemGenerator from "../generator/item-generator.js";
@@ -37,6 +38,35 @@ class Player extends Npc {
             this.items.splice(index, 1);
         } else {
             console.log('Item not in inventory');
+        }
+    }
+
+    load(json){
+        this.name = json.name;
+        this.description = json.description;
+        this.id = json.id;
+        Object.assign(this.attributes,json.attributes);
+        if(json.mainWeapon){
+            this.mainWeapon = Object.setPrototypeOf(json.mainWeapon, Weapon.prototype);
+        } else {
+            this.mainWeapon = null;
+        }
+        this.money = json.money;
+        if(json.armor){
+            this.armor = Object.setPrototypeOf(json.armor, Weapon.prototype);
+        } else {
+            this.armor = null;
+        }
+        this.exp = json.exp;
+        this.traits = json.traits;
+        this.location = json.location;
+        this.items = [];
+        for(let item of json.items){
+            this.items.push(Object.setPrototypeOf(item, Item.prototype))
+        }
+        this.survivalResources = {};
+        for(let survivalResource in json.survivalResources){
+            this.survivalResources[survivalResource] = (Object.setPrototypeOf(json.survivalResources[survivalResource], SurvivalResource.prototype))
         }
     }
 

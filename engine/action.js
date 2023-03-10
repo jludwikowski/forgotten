@@ -3,6 +3,7 @@ import World from "../models/world.js";
 import Shop from "../models/shop.js";
 import chalk from "chalk";
 import Item from "../models/item.js";
+import fs from "fs"
 
 let Action = {
 
@@ -131,6 +132,10 @@ let Action = {
 
     refill(args, player, place) { if(place.feature && place.feature.name.indexOf('pond')!=-1) { player.refill(args.join(' ')) } },
 
+    save(args, player, place) { fs.writeFileSync('./data/player.json', JSON.stringify(player)); },
+
+    load(args, player, place) { let rawdata = fs.readFileSync('./data/player.json'); player.load(JSON.parse(rawdata)); },
+
     help() {
         console.log('n, e, w, s - travel commands');
         console.log('go strange cave, go small hut - makes you travel into building or cave, exit makes you go out');
@@ -148,6 +153,8 @@ let Action = {
         console.log('roast - to roast all meat over fire');
         console.log('use - to use item or eat food or drink for example: use roasted meat');
         console.log('refill - to refill container for example: refill waterskin');
+        console.log('save - to save the game');
+        console.log('load - to load the game');
     },
 }
 

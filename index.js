@@ -42,10 +42,11 @@ async function customizeMap(player){
 }
 
 async function mainGameLoop() {
-    await World.genereateWorld(1,20,30);
+    await World.genereateWorld(1,50,50);
+    World.writeWorldToYaml();
     World.drawMap();
-    World.drawMap(1);
     player = await CharacterCreator.createPlayer();
+    World.player = player;
 
     console.log(`
     ${chalk.magentaBright('Welcome to Forgotten')}

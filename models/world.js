@@ -1,5 +1,8 @@
 import PlaceGenerator from '../generator/place-generator.js'
 import chalk from 'chalk';
+import yaml from 'yaml';
+import Room from './ranvier/room.js';
+import fs from "fs";
 
 let World = {
 
@@ -93,6 +96,17 @@ let World = {
             }
         }
 
+    },
+
+    writeWorldToYaml(){
+        let rooms = [];
+        for (let i = this.locations[0].length-1; i >= 0 ; i--){
+            for (let j = 0; j < this.locations[0][0].length; j++) {
+                rooms.push(new Room(this.locations[0][i][j]));
+            }
+        }
+
+        fs.writeFileSync('./data/rooms.yml', yaml.stringify(rooms));
     },
 
     drawMap(currentLevel){

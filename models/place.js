@@ -15,13 +15,14 @@ class Place extends Entity {
         this.items = items,
         this.monsters = monsters,
         this.money = 0,
-        this.feature = feature
+        this.feature = feature,
+        this.id = this.name.replace(' ','-') + '-' + this.location[0] + '-' + this.location[1] + '-' + this.location[2]
     }
 
     describeThySelf() {
         console.log(this.description);
         if(this.feature) {
-            console.log('There is ' + this.feature.description + ' here.');
+            console.log('There is a ' + this.feature.description + ' here.');
         }
         if(this.monsters) {
             for (const monster of this.monsters) { console.log(`You see a ${chalk.redBright(monster.description)}`) }

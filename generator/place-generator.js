@@ -20,15 +20,15 @@ let PlaceGenerator = {
     },
 
     generatePlaceByBiome(biome, plantColor, location){
-        const description = this.getPlaceDescription(biome,plantColor);
         const feature = FeatureGenerator.generateEntityWithProbability();
         if(feature && feature.place) {
             feature.place.location = [1, location[1],  location[2]];
             World.locations[1][location[1]][location[2]] = feature.place;
         }
         const name = this.adjective + ' ' + biome;
+        const description = this.getPlaceDescription(biome,plantColor, feature);
         let items = ItemGenerator.generateEntities();
-        let monsters = MonsterGenerator.generateEntities();
+        let monsters = MonsterGenerator.generateEntitiesFromBiome(biome);
         return new Place(name, biome, plantColor, description, location, items, monsters, feature);
     },
 
