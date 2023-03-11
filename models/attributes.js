@@ -13,7 +13,7 @@ class Attributes {
         this.melee = melee,
         this.ranged = ranged,
         this.spellcasting = spellcasting
-        this.maxHP = this.body*5+5+this.size*2,
+        this.maxHP = this.body*5+5+this.size*5,
         this.currentHP = this.maxHP,
         this.naturalArmor = naturalArmor ? naturalArmor : 0,
         this.ciritical = critical;

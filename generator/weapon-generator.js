@@ -2,8 +2,8 @@ import Adjectives from "../models/adjectives.js";
 import WeaponStats from "../stats/weapon-stats.js";
 import MaterialItemGenerator from "./material-item-generator.js";
 
-let types = ['sword','axe','spear','bow','dagger','mace','staff'];
-let adjectives = ['old','weathered','new','strange','dangerous','exceptional','elf-crafted'];
+let types = ['sword','axe','spear','bow','dagger','mace','staff','two heanded sword','two heanded axe'];
+let adjectives = ['old','weathered','new','strange','dangerous','exceptional','elf-crafted','crude'];
 let advancedAdjectives = ['master-crafted','runic'];
 let magicAdjectives = ['fire','ice','electric','holy','demonic'];
 

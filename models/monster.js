@@ -13,17 +13,7 @@ class Monster extends Entity{
         this.armor = armor,
         this.exp = exp,
         this.type = type,
-        this.traits = [],
-        this.traisTable = [
-            {name:'strong',price:1000},
-            {name:'very strong', price:2000},
-            {name:'quick',price:1000},
-            {name:'agile',price:1000},
-            {name:'very quick',price:2000},
-            {name:'very agile',price:2000},
-            {name:'tough',price:1000},
-            {name:'very tough',price:2000},
-            {name:'lucky',price:1000}]
+        this.traits = []
     }
 
     adjust(monster) {

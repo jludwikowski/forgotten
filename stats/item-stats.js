@@ -10,6 +10,7 @@ let ItemStats = {
     pan() { return new Item('pan','pan',2.2,4)},
     coat() { return new Item('coat','coat',1.6,10)},
     elixir() { return new Item('elixir','elixir',0.3,40,true) },
+    berries() { return new Item('berries','berries',0.5,5,true,true) },
     'raw meat'() { return new Item('raw meat','raw meat',1,3,true,true) },
     'bug meat'() { return new Item('bug meat','bug meat',1,1,true,true) },
     'roasted bug'() { return new Item('roasted bug','roasted bug',1,1,true,true) },

@@ -8,9 +8,12 @@ let WeaponStats = {
     dagger() { return new Weapon('dagger','dagger',0.8,8,1,5)},
     mace() { return new Weapon('mace','mace',2.1,2,4,4)},
     staff() { return new Weapon('staff','staff',1.6,8,0,2)},
+    'two heanded sword'() { return new Weapon('two heanded sword','two heanded sword',4,7,6,45)},
+    'two heanded axe'() { return new Weapon('two heanded sword','two heanded sword',4,0,10,25)},
     
     old() { return  new Weapon('old','old',1,-2,-1,0.5)},
-    weathered() { return  new Weapon('weathered','weathered',1,-1,0,0.6)},
+    crude() { return  new Weapon('crude','crude',1.2,-2,0,0.6)},
+    weathered() { return  new Weapon('weathered','weathered',1,-1,0,0.7)},
     new() { return  new Weapon('new','new',1,0,+1,1.3)},
     strange() { return  new Weapon('strange','strange',1,-1,+1,2)},
     dangerous() { return  new Weapon('dangerous','dangerous',1,+2,0,2)},

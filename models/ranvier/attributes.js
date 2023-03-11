@@ -1,6 +1,8 @@
 class RanvierAttributes {
 
     constructor(attributes) {
+    	this.health = attributes.maxHP*2,
+    	this.energy = 50 + attributes.stamina ? attributes.stamina*5 : 10,
         this.constitution = attributes.body*5 + (attributes.size*3),
         this.strength = attributes.strength*5,
         this.agility = attributes.agility*5,

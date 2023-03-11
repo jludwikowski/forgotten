@@ -20,8 +20,9 @@ class Generator {
     generateEntitiesFromBiome(biome){
         if(this.biomeTypesTables){
             let entities=[];
+            let type = roller.pickAtRandom(this.biomeTypesTables[biome]);
             while(roller.roll()<this.entityProbability){
-                entities.push(this.generateEntityFromBiome(biome))
+                entities.push(this.generateEntityByTypes([type]))
             }
             return entities;
         }
@@ -36,11 +37,6 @@ class Generator {
 
     generateEntity(){
         let type = roller.pickAtRandom(this.types);
-        return this.generateEntityByTypes([type]);
-    }
-
-    generateEntityFromBiome(biome){
-        let type = roller.pickAtRandom(this.biomeTypesTables[biome]);
         return this.generateEntityByTypes([type]);
     }
 

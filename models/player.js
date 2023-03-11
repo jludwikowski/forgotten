@@ -19,6 +19,16 @@ class Player extends Npc {
         let thirst = new SurvivalResource('thirst',[{name:'quenched',level:30},{name:'thirsty',level:60},{name:'very thirsty',level: 90}],{name:'parched',level:110});
         thirst.hurtLevel = 110;
         this.survivalResources = {hunger: hunger,thirst: thirst};
+        this.traisTable = [
+            {name:'strong',price:1000},
+            {name:'very strong', price:2000},
+            {name:'quick',price:1000},
+            {name:'agile',price:1000},
+            {name:'very quick',price:2000},
+            {name:'very agile',price:2000},
+            {name:'tough',price:1000},
+            {name:'very tough',price:2000},
+            {name:'lucky',price:1000}]
     }
 
     showStats() {
@@ -141,6 +151,7 @@ class Player extends Npc {
             const item = this.items[index];
             switch(item.name) {
                 case 'roasted meat': this.survivalResources.hunger.change(-30, this); break;
+                case 'berries': this.survivalResources.hunger.change(-15, this); this.survivalResources.thirst.change(-7, this); break;
                 case 'raw meat': this.survivalResources.hunger.change(-10, this); break;
                 case 'bug meat': this.survivalResources.hunger.change(+5, this); console.log('You vomited'); break;
                 case 'roasted bug': this.survivalResources.hunger.change(-20, this); break;

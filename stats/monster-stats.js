@@ -50,6 +50,14 @@ let MonsterStats = {
         return new Monster('lion', 'lion', new Attributes(4, 5, 5, 4,4,1,2,2,1,30,0,0,2,1),
             [ItemGenerator.generateBasic('raw meat'), ItemGenerator.generateBasic('pelt')], null, null, 0, 20, 'animal')
     },
+    cougar() {
+        return new Monster('cougar', 'cougar', new Attributes(3, 4, 4, 5,5,1,2,2,1,35,0,0,3,1),
+            [ItemGenerator.generateBasic('raw meat'), ItemGenerator.generateBasic('pelt')], null, null, 0, 20, 'animal')
+    },
+    warg() {
+        return new Monster('warg', 'warg', new Attributes(4, 4, 4, 4,4,1,2,2,1,25,0,0,2,1),
+            [ItemGenerator.generateBasic('raw meat'), ItemGenerator.generateBasic('pelt')], null, null, 0, 20, 'animal')
+    },
     moose() {
         return new Monster('moose', 'moose', new Attributes(5, 7, 5, 2,2,1,2,1,1,15,0,0,1,1),
             [ItemGenerator.generateBasic('raw meat'), ItemGenerator.generateBasic('pelt'), ItemGenerator.generateBasic('raw meat'), ItemGenerator.generateBasic('pelt')], null, null, 0, 20, 'animal')
@@ -124,6 +132,9 @@ let MonsterStats = {
     small() { return new Monster('small', 'small', new Attributes(-1, -1, -1, 1,0,1,0,0,0,0,0,0,1,0), null, null, null, 0, 0.8) },
     large() { return new Monster('large', 'large', new Attributes(0, 1, 1, -1,0,0,0,0,0,0,0,0,0,0), null, null, null, 0, 1.2) },
     huge() { return new Monster('huge', 'huge', new Attributes(1, 2, 2, -1,-1,-1,0,0,0,0,0,-1,0,0), null, null, null, 0, 1.5) },
+    sikly() { return new Monster('sikly', 'sikly', new Attributes(0, -1, -1, -1,0,0,0,0,0,0,0,0,0,0), null, null, null, 0, 0.5) },
+    aggresive() { return new Monster('aggresive', 'aggresive', new Attributes(0, 1, 1, 0,0,0,0,0,0,2,0,0,0,0), null, null, null, 0, 1.2) },
+    albino() { return new Monster('albino', 'albino', new Attributes(1, 2, 2, 2,0,0,0,0,0,5,0,10,1,0), null, null, null, 0, 3) },
     terrifying() { return new Monster('terrifying', 'terrifying', new Attributes(0, 1, 0, 1,1,1,0,1,0,1,0,0,1,0), null, null, null, 0, 1.5) },
     tattoed() {return new Monster('tattoed', 'tattoed', new Attributes(0, 1, 1, 1,1,1,0,1,0,5,5,5,1,0), null, null, null, 0, 2) },
     strange() { return new Monster('strange', 'strange', new Attributes(0, 0, 0, 1,1,1,1,1,1,0,0,0,1,0), null, null, null, 0, 1.2) },
