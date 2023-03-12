@@ -9,6 +9,8 @@ let FeatureStats = {
     hut() { return new Feature('hut','lonely hut', PlaceGenerator.generatePlaceByBiome('hut','green',[1,0,0])) },
     ruin() { return new Feature('ruin','ruin', PlaceGenerator.generatePlaceByBiome('ruin','green',[1,0,0])) },
     pond() { return new Feature('pond','pond') },
+    tower() { return new Feature('tower','single tower') },
+    stream() { return new Feature('stream','gurling crystal clear stream') },
     cave() { return new Feature('cave','cave', PlaceGenerator.generatePlaceByBiome('cave','white',[1,0,0])) },
     village() { return new Feature('village','village') },
 }

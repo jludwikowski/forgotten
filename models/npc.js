@@ -9,8 +9,8 @@ class Npc extends Monster {
 
     dialog = '(cheerfully) Welcome. Welcome';
 
-    async askForItem(inventory) {
-        let inventoryNames = inventory.map(item => item.name);
+    async askForItem(inventory, buyer) {
+        let inventoryNames = inventory.map(item => item.name + ':' + this.getItemPrice(item, this, buyer));
         const answer = await inquirer.prompt({
             name: 'item',
             type: 'list',
@@ -24,7 +24,8 @@ class Npc extends Monster {
     }
 
     async initiateTrade(buyer){
-        const itemName = await this.askForItem(this.items);
+        const concatenatedName = await this.askForItem(this.items, buyer);
+        const itemName = concatenatedName.split(':')[0];
         const index = this.findItem(itemName);
         if(index != -1) {
             const price = this.getItemPrice(this.items[index], this, buyer)

@@ -119,10 +119,13 @@ let World = {
                 if(this.locations[currentLevel][i][j]) {
                     switch (this.locations[currentLevel][i][j].biome) {
                         case 'desert':
-                            row += `${(chalk.bgYellow('dd'))}`;
+                            row += `${(chalk.bgYellowBright('dd'))}`;
                             break;
                         case 'mountain':
                             row += `${(chalk.bgWhite('MM'))}`;
+                            break;
+                        case 'farmland':
+                            row += `${(chalk.bgYellow('vv'))}`;
                             break;
                         case 'hill':
                             row += `${(chalk.bgGray('hh'))}`;

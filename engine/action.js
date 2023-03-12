@@ -130,7 +130,7 @@ let Action = {
 
     use(args, player, place) { player.use(args.join(' '), place); this.timePassed(player, place) },
 
-    refill(args, player, place) { if(place.feature && place.feature.name.indexOf('pond')!=-1) { player.refill(args.join(' ')) } },
+    refill(args, player, place) { if(place.feature && (place.feature.name.indexOf('pond')!=-1 || place.feature.name.indexOf('stream')!=-1) ) { player.refill(args.join(' ')) } },
 
     save(args, player, place) { fs.writeFileSync('./data/player.json', JSON.stringify(player)); },
 

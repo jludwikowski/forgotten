@@ -18,10 +18,11 @@ class Generator {
     }
 
     generateEntitiesFromBiome(biome){
-        if(this.biomeTypesTables){
+        if(this.biomeTypesTables && this.biomeTypesTables[biome]){
             let entities=[];
             let type = roller.pickAtRandom(this.biomeTypesTables[biome]);
-            while(roller.roll()<this.entityProbability){
+            let probability = (biome == 'farmland') ? 25 : this.entityProbability;
+            while(roller.roll()<probability){
                 entities.push(this.generateEntityByTypes([type]))
             }
             return entities;
