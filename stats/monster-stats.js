@@ -103,29 +103,29 @@ let MonsterStats = {
         ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(30), 30, 'humanoid')
     },
     'cat-folk'() {
-        return new Monster('cat-folk bandit', 'cat-folk', new Attributes(2, 2, 2,  4, 3,1,2,2,1,20,0,0,1,0),
+        return new Monster('cat-folk bandit', 'cat-folk bandit', new Attributes(2, 2, 2,  4, 3,1,2,2,1,20,0,0,1,0),
             ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(10), 30, 'humanoid')
     },
     'frog-folk'() {
-        return new Monster('frog-folk bandit', 'frog-folk', new Attributes(2, 2, 1,  2, 3,3,3,2,2,15,10,20,1,0),
+        return new Monster('frog-folk bandit', 'frog-folk bandit', new Attributes(2, 2, 1,  2, 3,3,3,2,2,15,10,20,1,0),
             ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(10), 30, 'humanoid')
     },'rat-folk'() {
-        return new Monster('rat-folk bandit', 'rat-folk', new Attributes(2, 2, 2,  2, 2,2,2,3,2,15,15,15,1,0),
+        return new Monster('rat-folk bandit', 'rat-folk bandit', new Attributes(2, 2, 2,  2, 2,2,2,3,2,15,15,15,1,0),
             ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(10), 20, 'humanoid')
     },'wannani'() {
-        return new Monster('wannani bandit', 'wannani', new Attributes(4, 3, 4,  1, 1,2,2,2,3,20,10,5,1,0),
+        return new Monster('wannani bandit', 'wannani bandit', new Attributes(4, 3, 4,  1, 1,2,2,2,3,20,10,5,1,0),
             ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(20), 40, 'humanoid')
     },'lizard-folk'(){
-        return new Monster('lizard-folk bandit', 'lizard-folk', new Attributes(2, 2, 2,  2, 2,2,2,2,3,15,15,15,1,0),
+        return new Monster('lizard-folk bandit', 'lizard-folk bandit', new Attributes(2, 2, 2,  2, 2,2,2,2,3,15,15,15,1,0),
             ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(20), 30, 'humanoid')
     },'huldre-troll'() {
         return new Monster('huldre-troll bandit', 'huldre-troll', new Attributes(1, 2, 1,  2, 2,3,3,2,3,10,15,25,2,0),
             ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(30), 30, 'humanoid')
     },'risi-troll'() {
-        return new Monster('risi-troll bandit', 'human bandit', new Attributes(2, 2, 3, 2,2,2,2,2,2,15,15,15,1,0),
+        return new Monster('risi-troll bandit', 'risi-troll bandit', new Attributes(2, 2, 3, 2,2,2,2,2,2,15,15,15,1,0),
         ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(30), 30, 'humanoid')
     },'jotun-troll'() {
-        return new Monster('wannani bandit', 'wannani', new Attributes(4, 4, 4,  1, 1,1,1,2,2,20,5,0,1,1),
+        return new Monster('wannani bandit', 'wannani bandit', new Attributes(4, 4, 4,  1, 1,1,1,2,2,20,5,0,1,1),
             ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(30), 40, 'humanoid')
     },
 
@@ -159,6 +159,12 @@ let MonsterStats = {
     tough() { return new Monster(null, null, new Attributes(0, 1, 0, 0,0,0,0,0,0,0,0,0,0,0), null, null, null, 0, 1) },
     'very tough'() { return new Monster(null, null, new Attributes(0, 1, 0, 0,0,0,0,0,0,0,0,0,0,0), null, null, null, 0, 1) },
     lucky() { return new Monster(null, null, new Attributes(0, 0, 0, 0,0,0,0,0,0,1,1,1,1,0), null, null, null, 0, 1) },
+
+    armor() { return new Monster(null, null, new Attributes(0, 0, 0, 0,0,0,0,0,0,0,0,0,0,3), null, null, null, 0, 1) },
+    strength() { return new Monster(null, null, new Attributes(0, 0, 3, 0,0,0,0,0,0,0,0,0,0,0), null, null, null, 0, 1) },
+
+    warrior() { return new Monster('warrior', 'warrior', new Attributes(0, 1, 1, 0,0,0,0,0,0,10,0,0,0,0), null, null, null, 0, 1.5) },
+    mage() { return new Monster('mage', 'mage', new Attributes(0, 0, 0, 0,0,1,1,0,0,0,0,20,0,0), null, null, null, 0, 1.5) },
 
     hungry() { return new Monster(null, null, new Attributes(0, 0, -1, -1,-1,0,0,0,0,0,0,0,0,0), null, null, null, 0, 1) },
     'very hungry'() { return new Monster(null, null, new Attributes(0, 0, -2, -2,-2,0,0,0,0,0,0,0,0,0), null, null, null, 0, 1) },

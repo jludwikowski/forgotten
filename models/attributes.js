@@ -16,8 +16,10 @@ class Attributes {
         this.maxHP = this.body*5+5+this.size*5,
         this.currentHP = this.maxHP,
         this.naturalArmor = naturalArmor ? naturalArmor : 0,
-        this.ciritical = critical;
-        this.haggling = haggling? haggling : 0
+        this.ciritical = critical,
+        this.haggling = haggling? haggling : 0,
+        this.maxMana = (this.intellect + this.willpower)*5,
+        this.currentMana = this.maxMana
     }
 
     adjust(adjustAttributes) {
@@ -68,6 +70,7 @@ class Attributes {
 
     update() {
         this.maxHP = this.body*5+5+this.size*2;
+        this.maxMana = (this.intellect + this.willpower)*5;
     }
 
     show() {

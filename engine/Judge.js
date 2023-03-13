@@ -17,10 +17,38 @@ let Judge = {
         }
     },
 
-    resolvePlayerAttack(player, monsters) {
-        let lastMonster = monsters[monsters.length-1];
-        this.attack(player,lastMonster);
-        if(roller.roll()<this.skillUpProbability) { player.attributes.melee+=1 }
+    magicAttack(spellcaster, monster, spell, roll){
+        if(roll < spellcaster.getMagicAttack()) {
+            let damage = spell.strenght + roller.rollDice(5);
+            console.log(spellcaster.name + ' magically attacked ' + monster.name + ' for: ' + damage + 'HP');
+            monster.damage(damage,'magic');
+        } else {
+            console.log(spellcaster.name + ' spell fizzled.');
+        }
+    },
+
+    resolvePlayerAttack(player, monsters, skill, spell) {
+        let roll = roller.roll();
+        if(!skill){
+            let skill='melee';
+        }
+        if(spell && !spell.attackAll){
+            let lastMonster = monsters[monsters.length-1];
+            this.attackType(player,lastMonster,skill,spell,roll)
+        } else {
+            for(let monster of monsters) {
+                this.attackType(player,monster,skill,spell,roll)
+            }
+        }
+        if(roll<this.skillUpProbability) { player.attributes[skill]+=1 }
+    },
+
+    attackType(player,monster,skill,spell, roll) {
+            if(skill == 'spellcasting'){
+                this.magicAttack(player,monster,spell,roll)
+            } else {
+                this.attack(player,monster);
+            }
     },
 
     monsterDrop(monster, place){
@@ -39,15 +67,17 @@ let Judge = {
     },
 
     resolveMonstersRound(player, monsters, place) {
-        let lastMonster = monsters[monsters.length-1];
-        if(lastMonster.attributes.currentHP < 0) {
-            this.monsterDrop(lastMonster,place);
-            player.exp += lastMonster.exp;
-            monsters.pop();
+        for(let i=0;i<monsters.length;i++){
+            if(monsters[i].attributes.currentHP < 0){
+                this.monsterDrop(monsters[i],place);
+                player.exp += monsters[i].exp;
+                monsters.splice(i, 1);
+                i--;
+            } else {
+                this.attack(monsters[i], player);
+            }
         }
-        for (const monster of monsters) {
-            this.attack(monster, player);
-        }
+        place.monsters = monsters;
     }
 }
 

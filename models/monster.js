@@ -13,7 +13,8 @@ class Monster extends Entity{
         this.armor = armor,
         this.exp = exp,
         this.type = type,
-        this.traits = []
+        this.traits = [],
+        this.activeSpells = [];
     }
 
     adjust(monster) {
@@ -42,15 +43,22 @@ class Monster extends Entity{
         return weaponDamage + this.attributes.strength;
     }
 
-    damage(damageValue) {
-        let armor = this.attributes.naturalArmor? this.attributes.naturalArmor: 0;
-        armor += this.armor? this.armor.damageReduction: 0;
-        damageValue -= armor;
-        if(damageValue>0) {
-            this.attributes.currentHP -= damageValue;
+    applyDamage(damageValue){
+        this.attributes.currentHP -= damageValue;
             if (this.attributes.currentHP < 0) {
                 console.log(chalk.red(this.name + ' is DEAD'));
-            }
+        }
+    }
+
+    damage(damageValue, type) {
+        let armor = 0;
+        if(type != 'magic'){
+            armor = this.attributes.naturalArmor? this.attributes.naturalArmor: 0;
+            armor += this.armor? this.armor.damageReduction: 0;
+        }
+        damageValue -= armor;
+        if(damageValue>0) {
+            this.applyDamage(damageValue);
         } else {
             console.log(chalk.yellow(this.name + '\'s armor soaked all damage'));
         }
@@ -59,6 +67,11 @@ class Monster extends Entity{
     heal(value) {
         this.attributes.currentHP = (this.attributes.currentHP + value < this.attributes.maxHP)?
             this.attributes.currentHP + value : this.attributes.maxHP;
+    }
+
+    replenish(value) {
+        this.attributes.currentMana = (this.attributes.currentMana + value < this.attributes.maxMana)?
+            this.attributes.currentMana + value : this.attributes.maxMana;
     }
 }
 

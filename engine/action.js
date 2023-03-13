@@ -16,9 +16,7 @@ let Action = {
     timePassed(player, place) {
         this.monstersActions(player, place);
         /* For time based resources  and not environment based */
-        player.survivalResources.hunger.change(1, player);
-        player.survivalResources.thirst.change(place.biome == 'desert'?2:1, player);
-        player.heal(1);
+        player.timerTick(place);
     },
 
     directionActions: {
@@ -136,6 +134,12 @@ let Action = {
 
     load(args, player, place) { let rawdata = fs.readFileSync('./data/player.json'); player.load(JSON.parse(rawdata)); },
 
+    cast(args, player, place) { player.cast(args.join(' '), place); this.timePassed(player, place);},
+
+    spells(args, player, place) { console.log(player.spells); },
+
+    activespells(args, player, place) { console.log(player.activeSpells); },
+
     help() {
         console.log('n, e, w, s - travel commands');
         console.log('go strange cave, go small hut - makes you travel into building or cave, exit makes you go out');
@@ -153,6 +157,9 @@ let Action = {
         console.log('roast - to roast all meat over fire');
         console.log('use - to use item or eat food or drink for example: use roasted meat');
         console.log('refill - to refill container for example: refill waterskin');
+        console.log('spells - to list all spells');
+        console.log('activespells - to list all active spells');
+        console.log('cast - to cast a specifix spell. For example: cast armor');
         console.log('save - to save the game');
         console.log('load - to load the game');
     },

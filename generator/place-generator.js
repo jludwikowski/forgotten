@@ -11,7 +11,7 @@ let PlaceGenerator = {
     plantColors: ['purple','blue','blueish','light green','deep green','dark green','yellow','brown'],
     adjectives: ['strange','cheerful','dark','foreboding','quiet','sunny'],
     density: ['overgrown ','dense ','sparse ','','ancient ','young '],
-    plantFeature: ['. You see some berry bush','. You see giant ancient tree stump','. You see several dead trees','. You see dense bush','. You see lots of vines suffucating plants aroudn here','. You see lots of flowers here'],
+    plantFeature: ['. You see some berry bush','. You see giant ancient tree stump','. You see several dead trees','. You see dense bush','. You see lots of vines suffucating plants aroud here','. You see lots of flowers here'],
     extraItems: [],
 
     generatePlace(borderPlace1, borderPlace2, location) {
@@ -111,7 +111,7 @@ let PlaceGenerator = {
             case 'meadow':
                 finish = roller.pickAtRandom(['. The meadow is dotted with wildflowers, their colors bright against the ' + plantColor + ' backdrop',
                     '. The grass is soft and inviting, and you feel a sense of peace wash over you as you step into the meadow',
-                    '. The grassy expanse stretches out before you, a sea of green that ripples in the gentle breeze',
+                    '. The grassy expanse stretches out before you, a sea of ' + plantColor + ' that ripples in the gentle breeze',
                     '. The air is alive with the sound of birdsong, and the scent of fresh earth and blooming flowers fills your nostrils']);
                 let hight = roller.pickAtRandom(['Taller than you ','Very tall ','Medium height ','Short ']);
                 biomePart = plantColor + ' ' + biome + '. ' + hight + plantColor + ' grass and herbs is all around you' + finish;

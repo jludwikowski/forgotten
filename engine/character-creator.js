@@ -29,6 +29,19 @@ let CharacterCreator = {
         return answer.race;
     },
 
+    async askClass() {
+        const answer = await inquirer.prompt({
+            name: 'class',
+            type: 'list',
+            message: 'Choose your race:',
+            choices: [ 'warrior', 'mage' ],
+            default() {
+                return 'warrior';
+            },
+        });
+        return answer.class;
+    },
+
     async writeDescription() {
         const answer = await inquirer.prompt({
             name: 'description',
@@ -44,8 +57,9 @@ let CharacterCreator = {
     async createPlayer() {
         let name = await this.askName();
         let race = await this.askRace();
+        let adventurerClass = await this.askClass();
         let description = await this.writeDescription();
-        return new Player(name,description,race,[0,5,5]);
+        return new Player(name,description,race,adventurerClass,[0,5,5]);
     }
 }
 

@@ -7,10 +7,13 @@ import Npc from "./npc.js";
 import inquirer from "inquirer";
 import ItemGenerator from "../generator/item-generator.js";
 import SurvivalResource from "./survival-resource.js";
+import Spellcaster from "./spellcaster.js"
+import Spell from "./spell.js";
 
-class Player extends Npc {
-    constructor(name, description, race, location) {
+class Player extends Spellcaster {
+    constructor(name, description, race, adventurerClass, location) {
         let BoilerPlate = MonsterStats[race]();
+        BoilerPlate.adjust(MonsterStats[adventurerClass]());
         let items = [new Item('mysterious coin','small weird copper coin',0.1,1)];
         let monster = new Monster(name, description, BoilerPlate.attributes, items, null, null, 0, 0);
         super(monster);
@@ -28,7 +31,10 @@ class Player extends Npc {
             {name:'very agile',price:2000},
             {name:'tough',price:1000},
             {name:'very tough',price:2000},
-            {name:'lucky',price:1000}]
+            {name:'lucky',price:1000}];
+        if(adventurerClass=='mage'){
+            this.spells = [new Spell("fireball","Fireball",12, true, null, null,10,true),new Spell("strength","Strength",8, false, 10, 'strength'),new Spell("armor","Armor",7, false, 10, 'armor'),new Spell("missile","Magic missile",5, true, null, null,10)];
+        }
     }
 
     showStats() {
@@ -121,6 +127,23 @@ class Player extends Npc {
             this.traits.splice(index, 1);
             if(trait in MonsterStats) {
                 this.reverse(MonsterStats[trait]());
+            }
+        }
+    }
+
+    timerTick(place) {
+        this.survivalResources.hunger.change(1, this);
+        this.survivalResources.thirst.change(place.biome == 'desert'?2:1, this);
+        this.heal(1);
+        this.replenish(1);
+        if(this.activeSpells){
+            for(let i=0;i<this.activeSpells.length;i++){
+                let spell = this.activeSpells[i]
+                spell.timerTick(this);
+                if(spell.durationLeft == 0){
+                    this.activeSpells.splice(i, 1);
+                    i--;
+                }
             }
         }
     }
