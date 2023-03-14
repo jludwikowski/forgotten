@@ -5,6 +5,7 @@ let ItemStats = {
     pot() { return new Item('pot','pot',2,1)},
     bottle() { return new Item('bottle','bottle',1,6)},
     book() { return new Item('book','book',1.5,20)},
+    spellbook() { return new Item('book of','book of',1.5,100)},
     boots() { return new Item('boots','boots',1.7,8)},
     tunic() { return new Item('tunic','tunic',1.2,6)},
     pan() { return new Item('pan','pan',2.2,4)},

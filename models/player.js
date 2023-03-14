@@ -9,6 +9,7 @@ import ItemGenerator from "../generator/item-generator.js";
 import SurvivalResource from "./survival-resource.js";
 import Spellcaster from "./spellcaster.js"
 import Spell from "./spell.js";
+import SpellGenerator from "../generator/spell-generator.js"
 
 class Player extends Spellcaster {
     constructor(name, description, race, adventurerClass, location) {
@@ -33,7 +34,7 @@ class Player extends Spellcaster {
             {name:'very tough',price:2000},
             {name:'lucky',price:1000}];
         if(adventurerClass=='mage'){
-            this.spells = [new Spell("fireball","Fireball",12, true, null, null,10,true),new Spell("strength","Strength",8, false, 10, 'strength'),new Spell("armor","Armor",7, false, 10, 'armor'),new Spell("missile","Magic missile",5, true, null, null,10)];
+            this.spells = [SpellGenerator.generateEntity(),SpellGenerator.generateEntity()];
         }
     }
 
@@ -172,6 +173,9 @@ class Player extends Spellcaster {
         const index = this.findItem(name);
         if(index != -1 && this.items[index].usable) {
             const item = this.items[index];
+            if(item.name.substring(0, 9) == 'spellbook') {
+                this.spells.push(item.spell);
+            }
             switch(item.name) {
                 case 'roasted meat': this.survivalResources.hunger.change(-30, this); break;
                 case 'berries': this.survivalResources.hunger.change(-15, this); this.survivalResources.thirst.change(-7, this); break;
