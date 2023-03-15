@@ -42,22 +42,54 @@ async function customizeMap(player){
 }
 
 async function mainGameLoop() {
+
     await World.genereateWorld(1,50,50);
     World.writeWorldToYaml();
     World.drawMap();
-    player = await CharacterCreator.createPlayer();
-    World.player = player;
 
-    console.log(`
-    ${chalk.magentaBright('Welcome to Forgotten')}
-    Your vision start to focus`);
+    let choice;
 
-    await customizeMap(player);
+    while (choice!='quit'){
 
-    while(player.attributes.currentHP > 0) {
-        await mainAction(player);
+        choice = await startOrLoad();
+        switch (choice) {
+            case 'start': player = await CharacterCreator.createPlayer(); break;
+            case 'load':
+                player = new Player("name", "description", 'elf', 'warrior', null);
+                Action.load(null,player,null);
+                player.location = [0,5,5];
+                break;
+            case 'quit': 
+                return;
+        }
+
+        World.player = player;
+
+        console.log(`
+        ${chalk.magentaBright('Welcome to Forgotten')}
+        Your vision start to focus`);
+
+        await customizeMap(player);
+
+        while(player.attributes.currentHP > 0) {
+            await mainAction(player);
+        }
+
+        console.log(chalk.red('YOU DIED'));
     }
-    console.log(chalk.red('YOU DIED'));
+}
+
+async function startOrLoad() {
+    const answer = await inquirer.prompt({
+        name: 'start_or_load',
+        type: 'list',
+        message: 'Start new game or load save game',
+        choices: [ 'start', 'load', 'quit' ],
+        default() {
+            return 'load';
+        },
+    });
+    return answer.start_or_load;
 }
 
 await mainGameLoop();
