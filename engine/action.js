@@ -20,15 +20,16 @@ let Action = {
     },
 
     directionActions: {
-        travel(newLocation, player) {
+        travel(newLocation, player, area) {
             player.location = newLocation;
+            player.area = area;
             console.log('You are in:');
-            World.getPlace(player.location).describeThySelf();
+            area.locations[newLocation[0]][newLocation[1]][newLocation[2]].describeThySelf();
         },
 
-        peer(newLocation) {
+        peer(newLocation, player, area) {
             console.log('You look further and see:');
-            World.getPlace(newLocation).describeThySelf();
+            area.locations[newLocation[0]][newLocation[1]][newLocation[2]].describeThySelf();
         }
     },
 
@@ -39,11 +40,26 @@ let Action = {
     },
 
     directionCommand(player, place, direction, action) {
-        let newLocation =  World.getLocation(player.location,direction);
-        if (World.canTravel(player.location, newLocation)) {
+        let newLocation =  this.getTravelLocation(player,place,direction);
+        if (newLocation) {
             this.timePassed(player, place);
-            this.directionActions[action](newLocation, player)
+            this.directionActions[action](newLocation.location, player, newLocation.area)
         }
+    },
+
+    getTravelLocation(player, place, direction) {
+        if (player.area == World && ['w','e','s','n'].includes(direction)) {
+            let newLocation = World.getLocation(player.location,direction);
+            if(World.canTravel(player.location, newLocation)){
+                return {location:newLocation, area:World};
+            }
+        }
+        for(let exit of place.exits) {
+            if (exit.direction.substring(0,1) == direction) {
+                return {location:exit.location,area:exit.area};
+            }
+        }
+        return null;
     },
 
     n(args, player, place) { this.directionCommand(player, place, 'n','travel'); },
@@ -54,6 +70,10 @@ let Action = {
 
     e(args, player, place) { this.directionCommand(player, place, 'e','travel'); },
 
+    d(args, player, place) { this.directionCommand(player, place, 'd','travel'); },
+
+    u(args, player, place) { this.directionCommand(player, place, 'u','travel'); },
+
     ln(args, player, place) { this.directionCommand(player, place, 'n','peer'); },
 
     ls(args, player, place) { this.directionCommand(player, place, 's','peer'); },
@@ -61,6 +81,10 @@ let Action = {
     lw(args, player, place) { this.directionCommand(player, place, 'w','peer'); },
 
     le(args, player, place) { this.directionCommand(player, place, 'e','peer'); },
+
+    lu(args, player, place) { this.directionCommand(player, place, 'u','peer'); },
+
+    ld(args, player, place) { this.directionCommand(player, place, 'd','peer'); },
 
     attack(args, player, place) {
         if(place.monsters && place.monsters.length>0) {
@@ -80,7 +104,7 @@ let Action = {
 
     stats(args, player, place) {
         switch(args.join(' ')) {
-            case 'weapon': console.log(player.mainWeapon); break;
+            case 'weapon': console.log(player.mainWeapon); break;  
             default: player.showStats();
         }
     },

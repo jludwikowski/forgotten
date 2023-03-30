@@ -3,6 +3,7 @@ import roller from '../engine/roller.js';
 import MonsterGenerator from "./monster-generator.js";
 import ItemGenerator from "./item-generator.js";
 import FeatureGenerator from "./feature-generator.js";
+import DungeonGenerator from '../generator/dungeon-generator.js';
 import World from "../models/world.js";
 
 let PlaceGenerator = {
@@ -10,6 +11,7 @@ let PlaceGenerator = {
     biomes: ['desert','mountain','hill','farmland','meadow','forest','swamp'],
     plantColors: ['purple','blue','blueish','light green','deep green','dark green','yellow','brown'],
     adjectives: ['strange','cheerful','dark','foreboding','quiet','sunny'],
+    undergroundAdjectives: ['strange','echoing','dark','foreboding','quiet','moldy'],
     density: ['overgrown ','dense ','sparse ','','ancient ','young '],
     plantFeature: ['. You see some berry bush','. You see giant ancient tree stump','. You see several dead trees','. You see dense bush','. You see lots of vines suffucating plants aroud here','. You see lots of flowers here'],
     extraItems: [],
@@ -22,21 +24,39 @@ let PlaceGenerator = {
         return this.generatePlaceByBiome(this.biome,this.plantColor, location)
     },
 
-    generatePlaceByBiome(biome, plantColor, location){
-        const feature = FeatureGenerator.generateEntityWithProbability();
-        if(feature && feature.place) {
-            feature.place.location = [1, location[1], location[2]];
-            World.locations[1][location[1]][location[2]] = feature.place;
+    generatePlaceByBiome(biome, plantColor, location, area, motif){
+        let feature;
+        let adjective;
+        let enclosed=false;
+        adjective = roller.pickAtRandom(this.adjectives);
+        if(!this.biomes.includes(biome)){
+            enclosed = true;
+            adjective = roller.pickAtRandom(this.undergroundAdjectives);
         }
-        const name = this.adjective + ' ' + biome;
+        if(!area) {
+            feature = FeatureGenerator.generateEntityWithProbability();
+            if(feature && feature.place) {
+                feature.place.location = [1, location[1], location[2]];
+                World.locations[1][location[1]][location[2]] = feature.place;
+                if(feature.name != 'hut'){
+                    let dungeon = DungeonGenerator.generateDungeon(feature.name.split(' ')[0],null);
+                    let dungeonEntrance = dungeon.locations[dungeon.entrance[0]][dungeon.entrance[1]][dungeon.entrance[2]];
+                    feature.place.addExit(dungeon.entrance,'down',dungeon);
+                    dungeonEntrance.exits[0].location = feature.place.location;
+                    dungeonEntrance.exits[0].area = World;
+                }
+            }
+        }
+        const name = adjective + ' ' + biome;
         let items = ItemGenerator.generateEntities();
-        const description = this.getPlaceDescription(biome,plantColor, feature);
+        const description = this.getPlaceDescription(biome,plantColor,motif,adjective);
         let monsters = MonsterGenerator.generateEntitiesFromBiome(biome);
         if(this.extraItems && this.extraItems.length != 0 ){
             items = items.concat(this.extraItems);
             this.extraItems = [];
         }
-        return new Place(name, biome, plantColor, description, location, items, monsters, feature);
+        
+        return new Place(name, biome, plantColor, description, location, items, monsters, feature, enclosed);
     },
 
     pickBiomeAndColor(borderPlace1,borderPlace2){
@@ -60,9 +80,11 @@ let PlaceGenerator = {
         return '';
     },
 
-    getPlaceDescription(biome,plantColor) {
+    getPlaceDescription(biome,plantColor,motif,adjective) {
+        motif = motif ? motif : '';
         let biomePart = '';
         let finish = '';
+        let size = roller.pickAtRandom(['tiny','small','average size','big','enormous']);
         switch (biome) {
             case 'desert':
                 let desertColor = roller.pickAtRandom([' White',' Whitish yellow',' Whitish yellow',' Deep yellow',' Orange',' Rust color',' Red',' Gray',' Black']);
@@ -156,28 +178,96 @@ let PlaceGenerator = {
                     default : biomePart += '. Inside the hut, the air is thick and musty, with the smell of rot and decay. The floorboards creak under your feet, and cobwebs brush against your face. The walls are lined with old tapestries, some of them faded and torn. Light from a broken window is casting eerie shadows around the room.';
                 }
                 break;
-            case 'ruin':
-                finish = roller.pickAtRandom(['. The ruins are eerie and unsettling. The silence is punctuated only by the occasional screech of a bird or the rustle of leaves',
-                    '. You can hear the faint sounds of dripping water and scurrying rodents',
-                    '. As you make your way deeper into the ruins, you find yourself surrounded by broken columns and shattered statues',
-                    '. Despite the decay and destruction, there is a sense of eerie beauty in the ruins. The way the light filters through the broken walls, casting long shadows across the ground']);
-                let ruinType = roller.pickAtRandom(['elf','dwarf','draconid','lizard-folk','troll','forgotten','ancient']);
-                biomePart = ruinType + ' ruins. Inside the ruins, you see remnants of the past - tattered banners, rusted weapons, and shattered pottery. The ground is strewn with rubble, and the only light comes from the cracks in the walls and ceiling' + finish;
-                break;
             case 'cave':
                 finish = roller.pickAtRandom(['. The walls are rough and jagged, slick with moisture, and the floor is uneven and covered with sharp rocks and debris',
                     '. The air is heavy and damp, and the sound of dripping water echoes through the cavern',
                     '. The sounds of the cave are eerie and unsettling. The dripping of water is constant, punctuated only by the occasional flutter of bat wings or the distant rumble of a cave-in',
-                    '. The air grows colder and the passages become more treacherous. The floor becomes slick with water, and the rocks seem more precarious']);
-                biomePart = 'cave. The cave is narrow and winding, with stalactites and stalagmites jutting out of the walls and floor. The air is cold and damp, and you can feel drops of water landing on your skin. You notice that the walls are covered in a strange moss, which glows faintly in the torchlight' + finish;
+                    '. The air grows colder and the passages become more treacherous. The floor becomes slick with water, and the rocks seem more precarious',
+                    '. The walls are covered in a strange bioluminescent moss',
+                    '. You see cave narrow chimney bringing some light here']);
+                biomePart = size + ' cave chamber. Stalactites and stalagmites jutting out all around you. The air is cold and damp, and you can feel drops of water landing on your skin' + finish;
+                break;
+            case 'cave corridor':
+                finish = roller.pickAtRandom(['. The walls of the cave are rough and uneven, carved out by centuries of erosion and water flow',
+                    '. The only light comes from a flickering torch or lantern, casting deep shadows that seem to move and dance in the dim light',
+                    '. The sounds of the cave are eerie and unsettling. The dripping of water is constant, punctuated only by the occasional flutter of bat wings or the distant rumble of a cave-in',
+                    '. The ground beneath your feet is uneven and treacherous, with jagged rocks and slippery stones making each step precarious',
+                    '. The corridor twists and turns, leading deeper into the depths of the cave',
+                    '. The only thing you can see is the seemingly endless expanse of rough rock that surrounds you',
+                    '. You can feel drops of water landing on your skin',
+                    '. You notice that the walls are covered in a strange moss, which glows faintly in the torchlight']);
+                biomePart = 'cave corridor is winding. Stalactites and stalagmites are sticking out from ceiling and floor. The air is cold and damp' + finish;
+                break;
+            case 'mine corridor':
+                finish = roller.pickAtRandom(['. The walls of the corridor are rough-hewn from solid rock, and the ceiling hangs low overhead',
+                    '. The air is thick with the scent of minerals and earth, and you can hear the sound of dripping water echoing through the corridors',
+                    '. The ground beneath your feet is rough and uneven, with small rocks and loose gravel making each step treacherous',
+                    '. The corridor begins to narrow, and you can feel the walls pressing in on you',
+                    '. The darkness grows more intense, and you can only see a few feet in front of you',
+                    '. Occasionally, you might catch a glimpse of something glinting in the dim light - perhaps a vein of ore or a stray gemstone. But more often than not, the only thing you can see is the seemingly endless expanse of rough rock that surrounds you']);
+                biomePart = motif + ' mine corridor streaching forward' + finish;
+                break;
+            case 'mine entrance':
+                finish = roller.pickAtRandom(['. It is marked by a set of rusted tracks that lead deep into the earth, disappearing into the darkness',
+                    '. It is close by set of heavy wooden doors, reinforced with iron bands and clearly designed to withstand the weight of tons of earth and rock',
+                    '. It is overgrown so that vines and bushes almost hide the entrance']);
+                biomePart = motif + ' abandoned mine entrace looks dangerous' + finish;
+                break;
+            case 'mine':
+                finish = roller.pickAtRandom(['. In the center of the chamber, you can see a large vein of ore, glimmering in the dim light. The vein is surrounded by piles of rocks and rubble, evidence of previous mining efforts',
+                    '. You can see tools scattered around the room, such as pickaxes and shovels, used by the miners who worked here before',
+                    '. There are also wooden supports and beams holding up the roof of the chamber, evidence of the dangers that lurk in the mine',
+                    '. The torches flicker and dance, casting eerie shadows that seem to move of their own accord',
+                    '. High ceiling stretches up into darkness',
+                    '. You\'re struck by how low-ceilinged it is. You can reach it with your hand',
+                    '. Wooden beams and supports hold the roof up, creaking and groaning under the weight of the earth above',
+                    '. You can see a large pile of rocks and rubble off to one side, evidence of previous mining effort']);
+                biomePart = size + motif + ' mine chamber' + finish;
+                break;
+            case 'ruins corridor':
+                finish = roller.pickAtRandom(['. The air thick with the scent of dust and decay',
+                    '. The corridor is narrow and cramped, with low ceilings and walls that seem to be closing in around you',
+                    '. The only light comes from flickering torches that cast eerie shadows along the walls',
+                    '. The floor beneath your feet is uneven and treacherous, with loose stones and rubble strewn across the ground',
+                    '. The walls are lined with crumbling stone bricks, evidence of the once-grand architecture that has now fallen into disrepair',
+                    '. As you move further down the corridor, you can see that there are rooms branching off from the main hallway, each one filled with debris and rubble',
+                    '. You can hear the sound of distant echoes, whispers that seem to be carried on the wind']);
+                biomePart = motif + ' ruins corridor going forward' + finish;
+                break;
+            case 'ruins':
+                finish = roller.pickAtRandom(['. The chamber is eerie and unsettling. The silence is punctuated only by the occasional screech of a bird or the rustle of leaves',
+                    '. You can hear the faint sounds of dripping water and scurrying rodents',
+                    '. The walls are adorned with intricate carvings and decorations, many of which have survived the ravages of time',
+                    '. Despite the decay and destruction, there is a sense of eerie beauty in the chamber. The way the light filters through the broken walls, casting long shadows across the ground',
+                    '. You can see faded frescoes and murals depicting scenes of great battles and epic events, and there are statues and sculptures of long-forgotten heroes and deities scattered throughout the space',
+                    '. The ceiling of the chamber is high and vaulted, with intricate arches and columns holding it aloft',
+                    '. In the center of the chamber, there is a raised dais or altar, surrounded by smaller statues and symbols',
+                    '. You see remnants of the past - tattered banners, rusted uknown items, and shattered pottery',
+                    '. Grandeur of this place has been marred by time, and you can see cracks and fissures running through the stone']);
+                biomePart = size + motif + ' ruin chamber' + finish;
+                break;
+            case 'ruins courtyard ':
+                finish = roller.pickAtRandom(['. You\'re greeted by a spacious open area surrounded by crumbling walls and columns',
+                    '. The ground beneath your feet is rough and uneven, covered in a layer of debris and rubble that crunches and shifts as you walk',
+                    '. It is a study in contrasts. On one hand, there is the undeniable beauty of the ancient architecture and design, with intricately carved columns and arches rising up around you. But on the other hand, there is the decay and ruin that has overtaken much of the space, with chunks of stone and plaster lying in disarray on the ground',
+                    '. It is dotted with broken statues and fountains, some still spewing water despite their age and disrepair',
+                    '. You can see ivy and other plants climbing up the walls and columns, adding a touch of life and vibrancy to the otherwise desolate space',
+                    '. The courtyard is surrounded by high walls, once grand and imposing but now crumbling and covered in moss and vines',
+                    '. Ancient garden now overgrown takes up entire space making it hard to cross jungle']);
+                biomePart = size + motif + ' ruin courtyard' + finish;
+                break;
+            case 'ruin entrance':
+                finish = roller.pickAtRandom(['. Immediately You notice the signs of age and neglect. The once grand facade has crumbled away in places, leaving jagged edges and gaping holes in the walls',
+                    '. Thick vines and weeds have overtaken much of the exterior, giving the structure a wild and untamed appearance',
+                    '. The once-beautiful arches and columns are now cracked and worn, and the floor is covered in a thick layer of dust and debris',
+                    '. You can see the remnants of intricate carvings and decorations, evidence of the grandeur that once existed in this space']);
+                biomePart = size + motif + ' ruins entrance opens before you' + finish;
                 break;
             default:
                 biomePart = plantColor + ' ' + biome;
         }
 
-        this.adjective = roller.pickAtRandom(this.adjectives);
-
-        return `A ${this.adjective} ${biomePart}.`;
+        return `A ${adjective} ${biomePart}.`;
     }
 
 }

@@ -2,12 +2,13 @@
 import chalk from 'chalk';
 import inquirer from 'inquirer';
 import World from './models/world.js'
-import Player from "./models/player.js";
-import Weapon from "./models/weapon.js";
-import CharacterCreator from "./engine/character-creator.js";
-import Action from "./engine/action.js";
-import Shop from "./models/shop.js";
-import Item from "./models/item.js";
+import Player from './models/player.js';
+import Weapon from './models/weapon.js';
+import CharacterCreator from './engine/character-creator.js';
+import Action from './engine/action.js';
+import Shop from './models/shop.js';
+import Item from './models/item.js';
+import DungeonGenerator from './generator/dungeon-generator.js';
 
 let player;
 
@@ -26,26 +27,33 @@ async function mainAction(player) {
     if(command) {
         const mainCommand = command.shift()
         if (mainCommand in Action) {
-            await Action[mainCommand](command, player, World.getPlace(player.location));
+            await Action[mainCommand](command, player, player.area.locations[player.location[0]][player.location[1]][player.location[2]]);
         }
     }
 }
 
-async function customizeMap(player){
+async function customizeMap(player,dungeon){
+    player.area = World;
     let rustySword = new Weapon('old sword','old sword',1.5,10,2,3);
+    let dungeonEntrance = dungeon.locations[dungeon.entrance[0]][dungeon.entrance[1]][dungeon.entrance[2]];
     player.items.push(new Item('flint','flint',0.4,10));
     player.items.push(new Item('waterskin','waterskin', 2.1, 10, true));
     World.getPlace(player.location).items.push(rustySword);
     World.getPlace(player.location).monsters = [];
     World.getPlace(player.location).feature = new Shop();
+    World.getPlace(player.location).addExit(dungeon.entrance,'down',dungeon);
+    dungeonEntrance.exits[0].location = player.location;
+    dungeonEntrance.exits[0].area = World;
     World.getPlace(player.location).describeThySelf();
 }
 
 async function mainGameLoop() {
 
+    let dungeon = DungeonGenerator.generateDungeon('mine','elven');
+
     await World.genereateWorld(1,50,50);
     World.writeWorldToYaml();
-    World.drawMap();
+    //World.drawMap();
 
     let choice;
 
@@ -69,7 +77,7 @@ async function mainGameLoop() {
         ${chalk.magentaBright('Welcome to Forgotten')}
         Your vision start to focus`);
 
-        await customizeMap(player);
+        await customizeMap(player, dungeon);
 
         while(player.attributes.currentHP > 0) {
             await mainAction(player);

@@ -7,6 +7,7 @@ import fs from "fs";
 let World = {
 
     locations: [],
+    areas:[],
 
     genereateWorld(dimentionZ, dimentionX, dimentionY){
         for (let z = 0; z < dimentionZ; z++) {
@@ -54,7 +55,7 @@ let World = {
     canTravel(location1,location2){
         if(this.getPlace(location2)==null) {
             return false;
-        }
+        } 
         let z = location2[0];
         let x = location2[1];
         let y = location2[2];

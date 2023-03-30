@@ -128,6 +128,10 @@ let MonsterStats = {
         return new Monster('wannani bandit', 'wannani bandit', new Attributes(4, 4, 4,  1, 1,1,1,2,2,20,5,0,1,1),
             ItemGenerator.generateEntities(), WeaponGenerator.generateEntity(), ArmorGenerator.generateEntity(), roller.rollDice(30), 40, 'humanoid')
     },
+    scarab() {
+        return new Monster('scarab', 'scarab', new Attributes(2, 3, 2, 2,2,0,2,2,2,10,0,0,1,3),
+        [ItemGenerator.generateBasic('bug meat')], null, null, 0, 40, 'bug')
+    },
 
     small() { return new Monster('small', 'small', new Attributes(-1, -1, -1, 1,0,1,0,0,0,0,0,0,1,0), null, null, null, 0, 0.8) },
     large() { return new Monster('large', 'large', new Attributes(0, 1, 1, -1,0,0,0,0,0,0,0,0,0,0), null, null, null, 0, 1.2) },
@@ -148,6 +152,7 @@ let MonsterStats = {
     spirit() { return new Monster('spirit', 'spirit', new Attributes(0, 1, 0, 3,3,1,3,0,2,2,2,2,0,0), null, null, null, 0, 4) },
     skeletal() { return new Monster('skeletal', 'skeletal', new Attributes(0, 4, 2, -1,-1,-1,-1,0,0,0,0,0,0,0), null, null, null, 0, 2) },
     runic() { return new Monster('runic', 'runic', new Attributes(0, 2, 2, 1,1,1,1,1,1,5,0,5,1,0), null, null, null, 0, 4) },
+    mummy() { return new Monster('mummy', 'mummy', new Attributes(0, 5, 3, -1,-1,0,0,0,0,0,5,1,0,0), null, null, null, 0, 5)},
 
     /*traits*/
     strong() { return new Monster(null, null, new Attributes(0, 0, 1, 0,0,0,0,0,0,0,0,0,0,0), null, null, null, 0, 1) },

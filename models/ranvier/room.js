@@ -9,7 +9,7 @@ class Room {
 		let featureDescription = place.feature ? ' There is a ' + place.feature.description + ' here.' : ''
 		this.id = place.id,
 		this.title = place.name,
-		this.coordinates = place.location.reverse(),
+		this.coordinates = place.location.slice().reverse(),
 		this.description = place.description + featureDescription;
 		if(place.monsters){
 			this.npcs = this.convertMonstersToNPCS(place.monsters);

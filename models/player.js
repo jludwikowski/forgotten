@@ -12,18 +12,19 @@ import Spell from "./spell.js";
 import SpellGenerator from "../generator/spell-generator.js"
 
 class Player extends Spellcaster {
-    constructor(name, description, race, adventurerClass, location) {
+    constructor(name, description, race, adventurerClass, location, area) {
         let BoilerPlate = MonsterStats[race]();
         BoilerPlate.adjust(MonsterStats[adventurerClass]());
         let items = [new Item('mysterious coin','small weird copper coin',0.1,1)];
         let monster = new Monster(name, description, BoilerPlate.attributes, items, null, null, 0, 0);
         super(monster);
+        this.area = area;
         this.location = location;
         let hunger = new SurvivalResource('hunger',[{name: 'sated',level:0},{name:'fed',level:50},{name:'hungry',level:100},{name:'very hungry',level: 150}]);
         let thirst = new SurvivalResource('thirst',[{name:'quenched',level:30},{name:'thirsty',level:60},{name:'very thirsty',level: 90}],{name:'parched',level:110});
         thirst.hurtLevel = 110;
         this.survivalResources = {hunger: hunger,thirst: thirst};
-        this.traisTable = [
+        this.traitsTable = [
             {name:'strong',price:1000},
             {name:'very strong', price:2000},
             {name:'quick',price:1000},
@@ -102,7 +103,7 @@ class Player extends Spellcaster {
     }
 
     async levelUp(){
-        const difference = this.traisTable.filter( x => !this.traits.includes(x.name) );
+        const difference = this.traitsTable.filter( x => !this.traits.includes(x.name) );
         const trait = await this.askForTraits(difference);
         if(trait != 'exit') {
             const traitArray = trait.split(":");

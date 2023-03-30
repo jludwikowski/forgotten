@@ -5,7 +5,7 @@ let roller = {
     },
 
     rollDice(type) {
-        return Math.round(Math.random()*type);
+        return Math.ceil(Math.random()*type);
     },
 
     pickFromTable(table, borderValue, borderValue2) {
