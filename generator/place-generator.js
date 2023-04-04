@@ -1,10 +1,11 @@
 import Place from '../models/place.js';
 import roller from '../engine/roller.js';
-import MonsterGenerator from "./monster-generator.js";
-import ItemGenerator from "./item-generator.js";
-import FeatureGenerator from "./feature-generator.js";
+import MonsterGenerator from './monster-generator.js';
+import ItemGenerator from './item-generator.js';
+import FeatureGenerator from './feature-generator.js';
 import DungeonGenerator from '../generator/dungeon-generator.js';
-import World from "../models/world.js";
+import World from '../models/world.js';
+import Exit from '../models/exit.js';
 
 let PlaceGenerator = {
 
@@ -13,7 +14,7 @@ let PlaceGenerator = {
     adjectives: ['strange','cheerful','dark','foreboding','quiet','sunny'],
     undergroundAdjectives: ['strange','echoing','dark','foreboding','quiet','moldy'],
     density: ['overgrown ','dense ','sparse ','','ancient ','young '],
-    plantFeature: ['. You see some berry bush','. You see giant ancient tree stump','. You see several dead trees','. You see dense bush','. You see lots of vines suffucating plants aroud here','. You see lots of flowers here'],
+    plantFeature: ['. You see some berry bush','. You see giant ancient tree stump','. You see several dead trees','. You see dense bush','. You see lots of vines suffucating plants aroud here','. You see lots of flowers here','. You see rign of man hight tall mushrooms here'],
     extraItems: [],
 
     generatePlace(borderPlace1, borderPlace2, location) {
@@ -27,7 +28,7 @@ let PlaceGenerator = {
     generatePlaceByBiome(biome, plantColor, location, area, motif){
         let feature;
         let adjective;
-        let enclosed=false;
+        let enclosed = false;
         adjective = roller.pickAtRandom(this.adjectives);
         if(!this.biomes.includes(biome)){
             enclosed = true;
@@ -55,7 +56,6 @@ let PlaceGenerator = {
             items = items.concat(this.extraItems);
             this.extraItems = [];
         }
-        
         return new Place(name, biome, plantColor, description, location, items, monsters, feature, enclosed);
     },
 
@@ -75,6 +75,9 @@ let PlaceGenerator = {
             if(plantF == '. You see some berry bush'){
                 this.extraItems.push(ItemGenerator.generateBasic('berries'));
             }
+            if(plantF == '. You see rign of man hight tall mushrooms here') {
+                this.extraItems.push(ItemGenerator.generateBasic('edible mushrooms'));
+            }
             return plantF;
         }
         return '';
@@ -91,6 +94,12 @@ let PlaceGenerator = {
                 let desertType = roller.pickAtRandom([' sand',' rock',' sand',' rock',' salt']);
                 finish = roller.pickAtRandom(['. The air is dry and dusty, filled with the gritty particles of sand that whip around in the wind, stinging your eyes and parching your throat',
                     '. The landscape is barren and desolate, with only the occasional outcropping of rock or scrubby plant to break up the monotony',
+                    '. You\'re immediately struck by the intense heat and dryness of the air',
+                    '. The wind whips through the desert, sending clouds of sand and dust swirling around you',
+                    '. You can feel the grit in your teeth and the sting of the sand against your skin',
+                    '. You notice small tracks in the sand, evidence of the hardy creatures that manage to survive in this harsh environment',
+                    '. Despite the dangers and harsh conditions, there is a strange beauty to the desert. The shifting sands and endless horizons give a sense of vastness and freedom',
+                    '. The ground beneath your feet is hard and cracked, with small rocks and sand dunes scattered throughout',
                     '. Towering sand dunes loom in the distance, their shadows stretching out like fingers across the desert floor']);
                 biomePart = 'desert.' + desertColor + desertType + ' is all around You' + finish;
 
@@ -99,9 +108,6 @@ let PlaceGenerator = {
                 }
                 break;
             case 'mountain':
-                finish = roller.pickAtRandom(['. Snow-capped peaks gleam in the sunlight, while waterfalls cascade down the rocky cliffs in shimmering sheets of white',
-                    '. The air is thick with the scent of pine and juniper, the trees clinging to the rocky terrain with tenacity',
-                    '. Loose rocks and scree slide underfoot with every step, threatening to send you tumbling down the steep incline']);
                 let color = roller.pickAtRandom([' gray',' gray',' white',' whitish yellow',' deep yellow',' rust color',' red',' black',' black']);
                 let mountainType = roller.pickAtRandom(['low','low','high']);
                 biomePart = mountainType + ' mountains.'
@@ -109,14 +115,29 @@ let PlaceGenerator = {
                     let bush = roller.pickAtRandom(['few bushes, ','']);
                     biomePart += ' You are surrounded by' + color + ' rocks, '+ bush + plantColor +' grass with some herbs and occasional short mountain pine'
                     biomePart += this.generatePlantFeature(40);
+                    finish = roller.pickAtRandom(['. Snow-capped peaks gleam in the sunlight, while waterfalls cascade down the rocky cliffs in shimmering sheets of white',
+                    '. The air is thick with the scent of pine and juniper, the trees clinging to the rocky terrain with tenacity',
+                    '. The ground beneath your feet is rocky and uneven, with small streams and rocky outcroppings breaking up the terrain',
+                    '. The low mountains are covered in a dense forest of pine and spruce trees, giving the landscape a verdant and lush appearance',
+                    '. You can hear the distant roar of a waterfall and the rustling of leaves in the wind. The mountains are alive with the sound of nature, from the chirping of birds to the howling of wolves',
+                    '. Loose rocks and scree slide underfoot with every step, threatening to send you tumbling down the steep incline']);
                 } else{
                     biomePart += ' Naked rocks and resilient lichen surrounds You'
+                    finish = roller.pickAtRandom(['. Snow-capped peaks gleam in the sunlight, while waterfalls cascade down the rocky cliffs in shimmering sheets of white',
+                    '. The air is thin and crisp, with a biting cold that seeps into your bones. The landscape is rugged and majestic, with towering peaks and deep valleys stretching out before you',
+                    '. The mountains are shrouded in mist and clouds, giving a sense of mystery and otherworldliness',
+                    '. Despite the harsh conditions, the high mountains are a place of incredible beauty and wonder. The sweeping vistas and breathtaking views are unparalleled, offering a sense of grandeur and awe that is unmatched by any other landscape',
+                    '. Loose rocks and scree slide underfoot with every step, threatening to send you tumbling down the steep incline']);
                 }
                     biomePart += finish;
                 break;
             case 'hill':
                 finish = roller.pickAtRandom(['. From the top of the hill, you can see for miles in every direction - the rolling countryside stretching out before you like a patchwork quilt',
                     '. The grassy slopes are dotted with wildflowers, their colors vibrant against the lush green backdrop',
+                    '. The hill is covered in a verdant blanket of grass and wildflowers, giving the landscape a soft and inviting appearance',
+                    '. The ground beneath your feet is soft and yielding, with the occasional rocky outcropping or tree root breaking up the terrain',
+                    '. The paths are winding and gentle, following the natural contours of the land',
+                    '. As you move further up the hill, the view becomes more expansive, revealing a panoramic vista of the surrounding countryside',
                     '. The slope is steep and rocky, with jagged outcroppings of stone jutting out from the earth like the teeth of some ancient beast',
                     '. The grasses here are sparse and tough, able to withstand the harsh conditions of the hill\'s environment']);
                 let hillType = roller.pickAtRandom(['low grassy','rocky','naked and windy','steep','overgrown','lightly forested']);
@@ -126,6 +147,10 @@ let PlaceGenerator = {
             case 'farmland':
                 finish = roller.pickAtRandom(['. The air is filled with the scent of freshly turned earth and growing crops',
                     '. The sound of birdsong and distant farm animals fills your ears',
+                    '. The silence is oppressive, broken only by the occasional creaking of old wooden structures in the wind',
+                    '. Rusty farming tools lay abandoned, half-buried in the dirt, and the remnants of a small farmhouse can be seen in the distance, its roof caved in and walls crumbling',
+                    '. The fields, once neatly tilled and divided into plots, now lie in disarray, with the remains of old fences and wooden stakes scattered about',
+                    '. The land, once lush with crops and vegetation, now lies barren and neglected. Weeds and thorny bushes have taken over, choking out any signs of life that may have remained',
                     '. The occasional scarecrow can be seen standing guard over the fields, keeping watch over the crops']);
                 let farmlandType = roller.pickAtRandom(['orchards','wheat fields','mixed crop farmland','corn fields','vegetable crops','rye fields']);
                 biomePart = farmlandType + ' surrounds You. All manner of smaller more varied fields and can be sean nearby' + finish;
@@ -133,6 +158,12 @@ let PlaceGenerator = {
             case 'meadow':
                 finish = roller.pickAtRandom(['. The meadow is dotted with wildflowers, their colors bright against the ' + plantColor + ' backdrop',
                     '. The grass is soft and inviting, and you feel a sense of peace wash over you as you step into the meadow',
+                    '. The ground beneath your feet is hard and rocky, with sharp stones jutting up from the earth',
+                    '. The grass is a sickly shade of ' + plantColor + ', with patches of yellow and brown scattered throughout',
+                    '. The few ' + plantColor + ' trees that dot the meadow are twisted and gnarled, with branches that seem to reach out and grab at you as you pass by',
+                    '. The ground beneath your feet is soft and springy, almost as if it\'s alive. You can feel the energy of the meadow coursing through the earth, filling you with a sense of wonder and excitement',
+                    '. The meadow is dotted with a variety of ' + plantColor + ' trees, from tall oaks to slender willows, providing shade and shelter to the wildlife that calls this place home',
+                    '. As you enter the meadow, you\'re greeted by a vast expanse of lush, ' + plantColor + ' grass that stretches out before you as far as the eye can see',
                     '. The grassy expanse stretches out before you, a sea of ' + plantColor + ' that ripples in the gentle breeze',
                     '. The air is alive with the sound of birdsong, and the scent of fresh earth and blooming flowers fills your nostrils']);
                 let hight = roller.pickAtRandom(['Taller than you ','Very tall ','Medium height ','Short ']);
@@ -142,6 +173,12 @@ let PlaceGenerator = {
             case 'forest':
                 finish = roller.pickAtRandom(['. The trees rise high into the sky, their branches stretching out like fingers towards the sun',
                     '. The ground is covered in a soft bed of leaves, and the air is thick with the scent of pine and cedar',
+                    '. The trees are twisted and gnarled, with sharp branches jutting out at odd angles',
+                    '. The air is thick with a palpable sense of danger, and the silence is broken only by the rustling of leaves and the occasional snap of a twig',
+                    '. Thorny vines wrap around the trees, and hidden pitfalls and traps lurk just out of sight',
+                    '. The ground beneath your feet is soft and covered in a thick layer of fallen leaves, making each step quiet and almost peaceful',
+                    '. The trees tower above you, their branches stretching towards the sky. The air is fresh and crisp, carrying the scent of pine and earth',
+                    '. The ground beneath your feet is covered in a thick layer of moss and vines, making every step a struggle',
                     '. You can hear the distant howl of some beast, and the rustling of leaves as unseen creatures move through the foliage',
                     '. The trees tower above you, their trunks thick and gnarled. Sunlight filters through the canopy, dappling the forest floor with patches of light']);
                 let density = roller.pickAtRandom(this.density);
@@ -151,6 +188,11 @@ let PlaceGenerator = {
             case 'swamp':
                 finish = roller.pickAtRandom(['. As you step into it, you are immediately struck by the overwhelming stench of decay',
                     '. The air is thick with the odor of stagnant water and rotting vegetation, making it difficult to breathe',
+                    '. The ground beneath your feet is soft and spongy, covered in a thick layer of slimy moss and muck',
+                    '. The air is thick with the stench of decay and rot, and a dense mist hangs low over the water',
+                    '. Multiple tall mushrooms call this place it\'s home feeding on dead trees',
+                    '. The trees that dot the swamp are twisted and gnarled, their roots jutting out of the water like the tentacles of some monstrous sea creature',
+                    '. The sound of water sloshing and gurgling is ever-present, and the occasional croak of a frog or splash of a fish is heard in the distance',
                     '. The water is murky and green, and the occasional ripple suggests that something may be lurking beneath the surface',
                     '. It is filled with murky, stagnant water and surrounded by dense stands of cattails and other water-loving plants',
                     '. The water is dark and murky, and you can\'t see more than a few inches below the surface',
@@ -184,17 +226,25 @@ let PlaceGenerator = {
                     '. The sounds of the cave are eerie and unsettling. The dripping of water is constant, punctuated only by the occasional flutter of bat wings or the distant rumble of a cave-in',
                     '. The air grows colder and the passages become more treacherous. The floor becomes slick with water, and the rocks seem more precarious',
                     '. The walls are covered in a strange bioluminescent moss',
+                    '. Stalactites twist and bend like the tentacles of some alien creature, and stalagmites grow up from the ground like the fingers of a giant\'s hand',
+                    '. The floor is uneven, with jagged rocks and stalactites jutting up from the ground. Strange, glowing mushrooms sprout up from the cracks and crevices, casting an eerie light around the cave',
+                    '. You are struck by the damp, musty smell of the earth. The walls are rough and uneven, with jagged rocks jutting out in places',
                     '. You see cave narrow chimney bringing some light here']);
                 biomePart = size + ' cave chamber. Stalactites and stalagmites jutting out all around you. The air is cold and damp, and you can feel drops of water landing on your skin' + finish;
                 break;
             case 'cave corridor':
                 finish = roller.pickAtRandom(['. The walls of the cave are rough and uneven, carved out by centuries of erosion and water flow',
                     '. The only light comes from a flickering torch or lantern, casting deep shadows that seem to move and dance in the dim light',
+                    '. The corridor stretches out before you, disappearing into the darkness. The ground beneath your feet is uneven, with rocks and debris strewn about',
                     '. The sounds of the cave are eerie and unsettling. The dripping of water is constant, punctuated only by the occasional flutter of bat wings or the distant rumble of a cave-in',
                     '. The ground beneath your feet is uneven and treacherous, with jagged rocks and slippery stones making each step precarious',
                     '. The corridor twists and turns, leading deeper into the depths of the cave',
                     '. The only thing you can see is the seemingly endless expanse of rough rock that surrounds you',
                     '. You can feel drops of water landing on your skin',
+                    '. Occasionally, you pass by wooden support beams, holding up the ceiling above. They creak and groan under the weight of the earth above, reminding you of the constant danger that lies within this underground world',
+                    '. The walls become slick with moisture, making the footing treacherous ',
+                    '. As you move further into the corridor, you notice small veins of ore running through the walls. The minerals glint in the light of your torch, tempting you with their value',
+                    '. The walls of the corridor are lined with small alcoves, containing the tools and equipment necessary for mining. You see pickaxes, shovels, and lanterns, all in varying states of wear and tear',
                     '. You notice that the walls are covered in a strange moss, which glows faintly in the torchlight']);
                 biomePart = 'cave corridor is winding. Stalactites and stalagmites are sticking out from ceiling and floor. The air is cold and damp' + finish;
                 break;
@@ -219,7 +269,12 @@ let PlaceGenerator = {
                     '. There are also wooden supports and beams holding up the roof of the chamber, evidence of the dangers that lurk in the mine',
                     '. The torches flicker and dance, casting eerie shadows that seem to move of their own accord',
                     '. High ceiling stretches up into darkness',
+                    '. In the center of the chamber is a large pit, filled with rubble and debris from the mining operations',
+                    '. On one side of the chamber, you see a row of wooden carts, filled with rocks and ore',
+                    '. The walls are lined with small alcoves, each containing a mining cart filled with valuable minerals. Some of the alcoves are empty, indicating that the ore has already been extracted',
+                    '. You\'re struck by the vastness of the space. The ceiling is high, supported by thick wooden beams, and the walls are lined with rough-hewn stone',
                     '. You\'re struck by how low-ceilinged it is. You can reach it with your hand',
+                    '. You notice a small shack in the corner of the chamber, which serves as a storage area for tools and supplies',
                     '. Wooden beams and supports hold the roof up, creaking and groaning under the weight of the earth above',
                     '. You can see a large pile of rocks and rubble off to one side, evidence of previous mining effort']);
                 biomePart = size + motif + ' mine chamber' + finish;
@@ -228,6 +283,12 @@ let PlaceGenerator = {
                 finish = roller.pickAtRandom(['. The air thick with the scent of dust and decay',
                     '. The corridor is narrow and cramped, with low ceilings and walls that seem to be closing in around you',
                     '. The only light comes from flickering torches that cast eerie shadows along the walls',
+                    '. You\'re immediately struck by the eerie silence that surrounds you',
+                    '. The corridor stretches out before you, lined with the remnants of ancient architecture. The walls are cracked and pitted, and the ground is littered with debris and rubble',
+                    '. You see broken statues, shattered pottery, and rusted weapons lying in the dust',
+                    '. You notice small shafts of light streaming in from cracks in the ceiling above. The light illuminates the dust particles in the air, casting a hazy glow over the ruins',
+                    '. You can\'t help but feel a sense of foreboding as you gaze upon the crumbling walls and broken pillars',
+                    '. In the distance, you see the remnants of what was once a grand archway, now reduced to a crumbled heap of stone',
                     '. The floor beneath your feet is uneven and treacherous, with loose stones and rubble strewn across the ground',
                     '. The walls are lined with crumbling stone bricks, evidence of the once-grand architecture that has now fallen into disrepair',
                     '. As you move further down the corridor, you can see that there are rooms branching off from the main hallway, each one filled with debris and rubble',
@@ -237,6 +298,12 @@ let PlaceGenerator = {
             case 'ruins':
                 finish = roller.pickAtRandom(['. The chamber is eerie and unsettling. The silence is punctuated only by the occasional screech of a bird or the rustle of leaves',
                     '. You can hear the faint sounds of dripping water and scurrying rodents',
+                    '. The ceiling towers high above you, supported by ornate columns and archways',
+                    '. The walls of the chamber are lined with alcoves, containing ancient relics and artifacts. You see ceremonial masks, stone amulets, and rusted weapons, all in varying states of decay',
+                    '. The ground beneath your feet is uneven, with broken pieces of stone and rubble strewn about',
+                    '. In the center of the chamber is a large stone altar, covered in faded glyphs and symbols. You can sense a powerful energy emanating from the altar',
+                    '. The walls are lined with faded murals and intricate carvings, depicting scenes from a long-forgotten civilization',
+                    '. Despite the decay and destruction, the remnants of the ancient architecture are still awe-inspiring',
                     '. The walls are adorned with intricate carvings and decorations, many of which have survived the ravages of time',
                     '. Despite the decay and destruction, there is a sense of eerie beauty in the chamber. The way the light filters through the broken walls, casting long shadows across the ground',
                     '. You can see faded frescoes and murals depicting scenes of great battles and epic events, and there are statues and sculptures of long-forgotten heroes and deities scattered throughout the space',

@@ -16,6 +16,8 @@ let ItemStats = {
     'bug meat'() { return new Item('bug meat','bug meat',1,1,true,true) },
     'roasted bug'() { return new Item('roasted bug','roasted bug',1,1,true,true) },
     'roasted meat'() { return new Item('roasted meat','roasted meat',0.7,10,true,true) },
+    'edible mushrooms'() { return new Item('edible mushrooms','edible mushrooms',1,1,true,true) },
+    'roasted mushrooms'() { return new Item('roasted mushrooms','roasted mushrooms',1,1,true,true) },
     pelt() { return new Item('pelt','pelt',2,12) },
 
     old() { return new Item('old','old',0.8,0.5)},

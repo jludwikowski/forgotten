@@ -37,6 +37,12 @@ class Player extends Spellcaster {
         if(adventurerClass=='mage'){
             this.spells = [SpellGenerator.generateEntity(),SpellGenerator.generateEntity()];
         }
+
+        this.roastingMap = new Map([
+          ['raw meat', 'roasted meat'],
+          ['bug meat', 'roasted bug'],
+          ['edible mushrooms', 'roasted mushrooms'],
+        ]);
     }
 
     showStats() {
@@ -183,6 +189,8 @@ class Player extends Spellcaster {
                 case 'raw meat': this.survivalResources.hunger.change(-10, this); break;
                 case 'bug meat': this.survivalResources.hunger.change(+5, this); console.log('You vomited'); break;
                 case 'roasted bug': this.survivalResources.hunger.change(-20, this); break;
+                case 'edible mushrooms': this.survivalResources.hunger.change(-3, this); break; 
+                case 'roasted mushrooms': this.survivalResources.hunger.change(-15, this); this.survivalResources.thirst.change(-3, this); break;break;
                 case 'waterskin':
                     if(item.weight > 0.5) {
                         this.survivalResources.thirst.change(-30, this);
@@ -209,15 +217,12 @@ class Player extends Spellcaster {
     }
 
     roast() {
-        while(this.findItem('raw meat')!=-1) {
-            let index = this.findItem('raw meat');
-            this.items.splice(index, 1);
-            this.items.push(ItemGenerator.generateBasic('roasted meat'));
-        }
-        while(this.findItem('bug meat')!=-1) {
-            let index = this.findItem('bug meat');
-            this.items.splice(index, 1);
-            this.items.push(ItemGenerator.generateBasic('roasted bug'));
+        for(const [key, value] of this.roastingMap.entries()){
+            while(this.findItem(key)!=-1) {
+                let index = this.findItem(key);
+                this.items.splice(index, 1);
+                this.items.push(ItemGenerator.generateBasic(value));
+            }
         }
     }
 
