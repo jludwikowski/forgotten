@@ -9,6 +9,7 @@ let DungeonGenerator = {
 	motiffTable: ['elven','dwarven','troll','ancient','old empire','sirr','sirr','sirr'],
 	biomeTable: ['ruins','cave','mine'],
 	types: ['corridor','chamber'],
+	currentId: -1,
 	maxX: 20,
 	maxY: 20,
 	maxZ: 20,
@@ -18,7 +19,8 @@ let DungeonGenerator = {
 	stairsDownChance:7,
 
 	generateDungeon(biome, motiff, entrance){
-		let area = {locations: []};
+		this.currentId ++;
+		let area = {locations: [], id:'dungeon-' + this.currentId};
 		this.biome = biome;
 		this.motiff = motiff;
 		let stairsDown = [];
@@ -29,10 +31,11 @@ let DungeonGenerator = {
 		let numberOflevels = roller.rollDice(this.maxZ);
 		for(let i=0;i<=numberOflevels;i++){
 			stairsDown = this.generateLevel(motiff, stairsDown,area,numberOflevels);
-			if(!stairsDown) {
+			if(!stairsDown || stairsDown.length==0) {
 				break;
 			}
 		}
+
 		return area;
 	},
 
@@ -70,6 +73,9 @@ let DungeonGenerator = {
 		for(let i=0;i<=nodesNumber;i++) {
 			index = roller.rollDice(waitingNodesTable.length)-1;
 			node = waitingNodesTable[index];
+			if(!node){
+				return [];
+			}
 			biome = this.getAdjective(node.lastBiome,this.biomeTable,this.biomeChangeChance);
 			motiff = this.getAdjective(node.lastMotiff,this.motiffTable,this.motiffChangeChance);
 			let type = roller.pickAtRandom(this.types);

@@ -99,7 +99,7 @@ class Player extends Spellcaster {
         const answer = await inquirer.prompt({
             name: 'trait',
             type: 'list',
-            message: 'Which items you want to trade:',
+            message: 'Which traits you want to pick:',
             choices: traitList.concat(['exit']),
             default() {
                 return 'exit';

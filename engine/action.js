@@ -13,6 +13,10 @@ let Action = {
         return command.split(/(\s+)/).filter( e => e.trim().length > 0);
     },
 
+    export(args, player, place) {
+        World.writeWorldToYaml();
+    },
+
     timePassed(player, place) {
         this.monstersActions(player, place);
         /* For time based resources  and not environment based */

@@ -52,7 +52,6 @@ async function mainGameLoop() {
     let dungeon = DungeonGenerator.generateDungeon('mine','elven');
 
     await World.genereateWorld(1,50,50);
-    World.writeWorldToYaml();
     //World.drawMap();
 
     let choice;

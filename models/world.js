@@ -1,4 +1,5 @@
-import PlaceGenerator from '../generator/place-generator.js'
+import PlaceGenerator from '../generator/place-generator.js';
+import DungeonGenerator from '../generator/dungeon-generator.js';
 import chalk from 'chalk';
 import yaml from 'yaml';
 import Room from './ranvier/room.js';
@@ -8,6 +9,7 @@ let World = {
 
     locations: [],
     areas:[],
+    id:'world',
 
     genereateWorld(dimentionZ, dimentionX, dimentionY){
         for (let z = 0; z < dimentionZ; z++) {
@@ -101,13 +103,37 @@ let World = {
 
     writeWorldToYaml(){
         let rooms = [];
+        console.log("STARTING EXPORT");
         for (let i = this.locations[0].length-1; i >= 0 ; i--){
             for (let j = 0; j < this.locations[0][0].length; j++) {
                 rooms.push(new Room(this.locations[0][i][j]));
+                if(this.locations[1][i][j]){
+                    let featureRoom = new Room(this.locations[1][i][j]);
+                    featureRoom.coordinates = null;
+                    rooms.push(featureRoom);
+                    if(this.locations[1][i][j].biome !== 'hut'){
+                        rooms.push(...this.getDungeonRooms(this.locations[1][i][j].exits[0].area))
+                    }
+                }
             }
         }
-
+        console.log("ROOMS NUMBER");
+        console.log(rooms.length);
         fs.writeFileSync('./data/rooms.yml', yaml.stringify(rooms));
+    },
+
+    getDungeonRooms(area){
+        let rooms = []
+        for(let level = 0;level<area.locations.length;level++) {
+            for(let i=0;i<DungeonGenerator.maxX;i++) {
+                for(let j=0;j<DungeonGenerator.maxY;j++) {
+                    if(area.locations[level][i][j]){
+                        rooms.push(new Room(area.locations[level][i][j]));
+                    }
+                }
+            }
+        }
+        return rooms;
     },
 
     drawMap(currentLevel){

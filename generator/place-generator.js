@@ -19,7 +19,7 @@ let PlaceGenerator = {
 
     generatePlace(borderPlace1, borderPlace2, location) {
         if(borderPlace1==null && borderPlace2==null) {
-            return new Place('Strange blue meadow', 'meadow', 'blue', 'You are in a strange blue meadow', location, null, null, FeatureGenerator.generateEntity());
+            return new Place('Strange blue meadow', 'meadow', 'blue', 'You are in a strange blue meadow', location, null, null, FeatureGenerator.generateEntity(), false, [], 'world');
         }
         this.pickBiomeAndColor(borderPlace1,borderPlace2)
         return this.generatePlaceByBiome(this.biome,this.plantColor, location)
@@ -29,24 +29,30 @@ let PlaceGenerator = {
         let feature;
         let adjective;
         let enclosed = false;
+        let exit = null;
+        let areadId = 'world';
         adjective = roller.pickAtRandom(this.adjectives);
         if(!this.biomes.includes(biome)){
             enclosed = true;
             adjective = roller.pickAtRandom(this.undergroundAdjectives);
         }
-        if(!area) {
+        if((!area || area==World) && location[0]==0) {
             feature = FeatureGenerator.generateEntityWithProbability();
             if(feature && feature.place) {
                 feature.place.location = [1, location[1], location[2]];
                 World.locations[1][location[1]][location[2]] = feature.place;
-                if(feature.name != 'hut'){
-                    let dungeon = DungeonGenerator.generateDungeon(feature.name.split(' ')[0],null);
+                if(!feature.name.includes('hut')) {
+                    let dungeon = DungeonGenerator.generateDungeon(feature.type,null);
                     let dungeonEntrance = dungeon.locations[dungeon.entrance[0]][dungeon.entrance[1]][dungeon.entrance[2]];
                     feature.place.addExit(dungeon.entrance,'down',dungeon);
                     dungeonEntrance.exits[0].location = feature.place.location;
                     dungeonEntrance.exits[0].area = World;
                 }
+                exit = new Exit(feature.place.location,'inside',World);
             }
+        } 
+        if(area && area.id){     
+            areadId = area.id;
         }
         const name = adjective + ' ' + biome;
         let items = ItemGenerator.generateEntities();
@@ -56,7 +62,7 @@ let PlaceGenerator = {
             items = items.concat(this.extraItems);
             this.extraItems = [];
         }
-        return new Place(name, biome, plantColor, description, location, items, monsters, feature, enclosed);
+        return new Place(name, biome, plantColor, description, location, items, monsters, feature, enclosed,[exit], areadId);
     },
 
     pickBiomeAndColor(borderPlace1,borderPlace2){

@@ -17,8 +17,9 @@ class Room {
 		if(place.items){
 			this.items = this.convertItems(place.items);
 		}
-		if(place.feature){
-			this.exits = this.createExits(place);
+		if(place.exits && place.exits.length !=0) {
+			this.exist = place.exits.map(exit => (
+				{roomId: exit.area.locations[exit.location[0]][exit.location[1]][exit.location[2]].id, direction: exit.direction}));
 		}
 	}
 
@@ -28,7 +29,7 @@ class Room {
 		for(let monster of monsters){
 			let npc = new RanvierNpc(monster);
 			npcs.push(npc.id);
-			fs.appendFile('./data/npcs.yml', yaml.stringify(npc), function (err) {
+			fs.appendFileSync('./data/npcs.yml', yaml.stringify(npc), function (err) {
 		  		if (err) {console.log('Error saving'); console.log(monster)};
 			});
 		}
@@ -36,10 +37,6 @@ class Room {
 	}
 
 	convertItems(items){
-
-	}
-
-	createExits(place){
 
 	}
 

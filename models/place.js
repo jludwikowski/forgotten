@@ -6,8 +6,9 @@ import Exit from './exit.js';
 
 class Place extends Entity {
 
-    constructor(name, biome, plantColor, description, location, items, monsters, feature, enclosed, exits) {
+    constructor(name, biome, plantColor, description, location, items, monsters, feature, enclosed, exits, areaId) {
         super(name, description)
+        this.areaId = areaId ? areaId : 'world',
         this.identity = 'place',
         this.biome = biome,
         this.plantColor = plantColor,
@@ -17,9 +18,9 @@ class Place extends Entity {
         this.monsters = monsters,
         this.money = 0,
         this.feature = feature,
-        this.id = this.name.replace(' ','-') + '-' + this.location[0] + '-' + this.location[1] + '-' + this.location[2],
+        this.id = this.areaId + '-' + this.name.replaceAll(' ','-') + '-' + this.location[0] + '-' + this.location[1] + '-' + this.location[2],
         this.enclosed = enclosed,
-        this.exits = exits ? exits : []
+        this.exits = exits && exits[0] ? exits : [];
     }
 
     describeThySelf() {

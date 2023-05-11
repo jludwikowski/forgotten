@@ -52,6 +52,7 @@ class Generator {
         if(entity.attributes) {
             entity.attributes.updateHealth();
         }
+        entity.type = type;
         return entity;
     }
 
