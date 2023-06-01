@@ -52,7 +52,7 @@ async function mainGameLoop() {
     let dungeon = DungeonGenerator.generateDungeon('mine','elven');
 
     await World.genereateWorld(1,50,50);
-    //World.drawMap();
+    World.drawMap();
 
     let choice;
 
@@ -66,7 +66,7 @@ async function mainGameLoop() {
                 Action.load(null,player,null);
                 player.location = [0,5,5];
                 break;
-            case 'quit': 
+            case 'quit':
                 return;
         }
 

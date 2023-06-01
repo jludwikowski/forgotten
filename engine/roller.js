@@ -9,6 +9,10 @@ let roller = {
     },
 
     pickFromTable(table, borderValue, borderValue2) {
+        if(borderValue == 'shore' || borderValue == 'sea' || borderValue2 == 'shore' || borderValue2 == 'sea') {
+            borderValue = 'meadow';
+            borderValue2 = 'meadow';
+        }
         let borderIndex1 = table.indexOf(borderValue);
         let borderIndex2 = table.indexOf(borderValue2);
         let randomRoll = this.roll();

@@ -95,7 +95,7 @@ let World = {
             for (let j = 0; j < dimentionY; j++) {
                 let borderPlace1 = i>0 ? currentLevel[i-1][j]: null;
                 let borderPlace2 = j>0 ? currentLevel[i][j-1]: null;
-                currentLevel[i][j] = PlaceGenerator.generatePlace(borderPlace1,borderPlace2,[coordZ,i,j])
+                currentLevel[i][j] = PlaceGenerator.generatePlace(borderPlace1,borderPlace2,[coordZ,i,j],dimentionY)
             }
         }
 
@@ -148,6 +148,12 @@ let World = {
                         case 'desert':
                             row += `${(chalk.bgYellowBright('dd'))}`;
                             break;
+                        case 'sea':
+                            row += `${(chalk.bgBlue('~~'))}`;
+                            break;
+                        case 'shore':
+                            row += `${(chalk.bgMagenta('||'))}`;
+                            break;
                         case 'mountain':
                             row += `${(chalk.bgWhite('MM'))}`;
                             break;
@@ -158,13 +164,13 @@ let World = {
                             row += `${(chalk.bgGray('hh'))}`;
                             break;
                         case 'meadow':
-                            row += `${(chalk.bgGreenBright('~~'))}`;
+                            row += `${(chalk.bgGreenBright('--'))}`;
                             break;
                         case 'forest':
                             row += `${(chalk.bgGreen('ff'))}`;
                             break;
                         case 'swamp':
-                            row += `${(chalk.bgBlue('ss'))}`;
+                            row += `${(chalk.bgBlueBright('ss'))}`;
                             break;
                         default:
                             row += `${(chalk.bgMagenta('DD'))}`;

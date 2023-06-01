@@ -17,11 +17,11 @@ let PlaceGenerator = {
     plantFeature: ['. You see some berry bush','. You see giant ancient tree stump','. You see several dead trees','. You see dense bush','. You see lots of vines suffucating plants aroud here','. You see lots of flowers here','. You see rign of man hight tall mushrooms here'],
     extraItems: [],
 
-    generatePlace(borderPlace1, borderPlace2, location) {
+    generatePlace(borderPlace1, borderPlace2, location,dimentionY) {
         if(borderPlace1==null && borderPlace2==null) {
             return new Place('Strange blue meadow', 'meadow', 'blue', 'You are in a strange blue meadow', location, null, null, FeatureGenerator.generateEntity(), false, [], 'world');
         }
-        this.pickBiomeAndColor(borderPlace1,borderPlace2)
+        this.pickBiomeAndColor(borderPlace1,borderPlace2,location,dimentionY)
         return this.generatePlaceByBiome(this.biome,this.plantColor, location)
     },
 
@@ -65,14 +65,27 @@ let PlaceGenerator = {
         return new Place(name, biome, plantColor, description, location, items, monsters, feature, enclosed,[exit], areadId);
     },
 
-    pickBiomeAndColor(borderPlace1,borderPlace2){
-        if (borderPlace1!=null && borderPlace2 != null) {
-            this.biome = roller.pickFromTable(this.biomes, borderPlace1.biome, borderPlace2.biome);
-            this.plantColor = roller.pickFromTable(this.plantColors, borderPlace1.plantColor, borderPlace2.plantColor);
+    pickBiomeAndColor(borderPlace1, borderPlace2, location, dimentionY){
+        let shoreChance = 0;
+        if(borderPlace2 != null && (borderPlace2.biome=='shore' || borderPlace2.biome=='sea')){
+            this.biome = 'sea';
+            this.plantColor = borderPlace2.plantColor; 
+            return;
         } else {
-            this.biome = roller.pickFromTable(this.biomes, borderPlace1!=null ? borderPlace1.biome : borderPlace2.biome);
-            this.plantColor = roller.pickFromTable(this.plantColors, borderPlace1!=null ? borderPlace1.plantColor : borderPlace2.plantColor);
-        }
+            if(location[2]>dimentionY-4){
+                shoreChance = (1/(dimentionY-location[2]))*100;
+            }
+            if (borderPlace1!=null && borderPlace2 != null) {
+                this.biome = roller.pickFromTable(this.biomes, borderPlace1.biome, borderPlace2.biome);
+                this.plantColor = roller.pickFromTable(this.plantColors, borderPlace1.plantColor, borderPlace2.plantColor);
+            } else {
+                this.biome = roller.pickFromTable(this.biomes, borderPlace1!=null ? borderPlace1.biome : borderPlace2.biome);
+                this.plantColor = roller.pickFromTable(this.plantColors, borderPlace1!=null ? borderPlace1.plantColor : borderPlace2.plantColor);
+            }
+            if(roller.roll()<shoreChance){
+                this.biome = 'shore';
+            }
+        }    
     },
 
     generatePlantFeature(probability) {
@@ -110,7 +123,27 @@ let PlaceGenerator = {
                 biomePart = 'desert.' + desertColor + desertType + ' is all around You' + finish;
 
                 if(roller.roll<40){
-                    biomePart += ' You see some ' + plantColor + ' cacti and agava';
+                    biomePart += '. You see some ' + plantColor + ' cacti and agava';
+                }
+                break;
+            case 'shore':
+                finish = roller.pickAtRandom(['. As you step onto the sandy shore, you\'re immediately greeted by the sight and sound of crashing waves',
+                    '. The air is salty and bracing, carrying the scent of rotting wood and something unknown. Rock formations rise up from the water, their surfaces worn smooth by centuries of tides and currents',
+                    '. The sand beneath your feet is soft and warm, the grains shimmering with specks of gold and silver. Seashells of all shapes and sizes are scattered along the shore, whispering secrets of the vast ocean',
+                    '. The rugged cliffs tower above, their imposing presence commanding both respect and awe. The crashing waves below send plumes of salty spray into the air, creating a mesmerizing display of power and beauty',
+                    '. The shore cliff face is a tapestry of colors, with streaks of vibrant red, ochre, and gray running through the weathered rock. Moss and ivy cling to the edges, adding a touch of greenery to the imposing landscape',
+                    '. As you approach the edge of a cliff, a dizzying drop unfolds, revealing the vast expanse of the sea. The water stretches out endlessly, its surface shimmering under the rays of the sun',
+                    '. Narrow paths wind along the cliff face, inviting intrepid adventurers to explore their treacherous trails. Jagged rocks jut out from the water, forming natural platforms and ledges that serve as precarious vantage points',
+                    '. The sand beneath your feet is fine and pristine, glistening like a golden carpet. Shells of various shapes and sizes are scattered along the shore, a testament to the diverse marine life that inhabits these waters. Small waves lap gently at the shore, creating a soothing rhythm',
+                    '. The shore is strewn with large boulders and sharp rocks. ock formations rise up from the water, forming natural tide pools teeming with colorful marine flora and fauna. Starfish cling to the rocks, while schools of tropical fish dart in and out of the coral reefs',
+                    '. The waves crash against the rocky shore, sending plumes of foam and spray into the air. The sound is thunderous, reverberating through the landscape and creating an awe-inspiring spectacle of nature\'s raw power']);
+                biomePart = ' shore' + finish;
+
+                if(roller.roll<40){
+                    biomePart += '. You see some driftwood debris';
+                }
+                if(roller.roll<30){
+                    biomePart += '. You also see some abandoned, tangled fishing nets';
                 }
                 break;
             case 'mountain':
@@ -335,6 +368,9 @@ let PlaceGenerator = {
                     '. The once-beautiful arches and columns are now cracked and worn, and the floor is covered in a thick layer of dust and debris',
                     '. You can see the remnants of intricate carvings and decorations, evidence of the grandeur that once existed in this space']);
                 biomePart = size + motif + ' ruins entrance opens before you' + finish;
+                break;
+            case 'sea':
+                biomePart = ' water sourrounds you.';
                 break;
             default:
                 biomePart = plantColor + ' ' + biome;
