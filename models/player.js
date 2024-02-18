@@ -34,7 +34,7 @@ class Player extends Spellcaster {
             {name:'tough',price:1000},
             {name:'very tough',price:2000},
             {name:'lucky',price:1000}];
-        if(adventurerClass=='mage'){
+        if(adventurerClass=='mage' || adventurerClass=='shaman'){
             this.spells = [SpellGenerator.generateEntity(),SpellGenerator.generateEntity()];
         }
 
@@ -42,12 +42,13 @@ class Player extends Spellcaster {
           ['raw meat', 'roasted meat'],
           ['bug meat', 'roasted bug'],
           ['edible mushrooms', 'roasted mushrooms'],
+          ['good meat','roasted good meat'],
+          ['sucullent meat','roasted sucullent meat']
         ]);
     }
 
     showStats() {
         this.attributes.show();
-        console.log('hunger: ' + this.hunger);
         console.log('EXP: ' + this.exp);
         console.log(this.traits);
         for (const key in this.survivalResources) {
@@ -190,7 +191,10 @@ class Player extends Spellcaster {
                 case 'bug meat': this.survivalResources.hunger.change(+5, this); console.log('You vomited'); break;
                 case 'roasted bug': this.survivalResources.hunger.change(-20, this); break;
                 case 'edible mushrooms': this.survivalResources.hunger.change(-3, this); break; 
-                case 'roasted mushrooms': this.survivalResources.hunger.change(-15, this); this.survivalResources.thirst.change(-3, this); break;break;
+                case 'roasted mushrooms': this.survivalResources.hunger.change(-15, this); this.survivalResources.thirst.change(-3, this); break;
+                case 'roasted good meat': this.survivalResoures.hunger.change(-40, this); this.survivalResources.thirst.change(-3, this); break;
+                case 'roasted sucullent meat': this.survivalResources.hunger.change(-50, this); this.survivalResources.thirst.change(+3, this); break;
+                case 'healing herb': this.heal(30); break;   
                 case 'waterskin':
                     if(item.weight > 0.5) {
                         this.survivalResources.thirst.change(-30, this);

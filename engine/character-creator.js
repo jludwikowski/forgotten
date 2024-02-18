@@ -34,7 +34,7 @@ let CharacterCreator = {
             name: 'class',
             type: 'list',
             message: 'Choose your race:',
-            choices: [ 'warrior', 'mage' ],
+            choices: [ 'warrior', 'mage', 'rogue', 'shaman' ],
             default() {
                 return 'warrior';
             },

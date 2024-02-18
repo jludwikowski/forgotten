@@ -78,7 +78,7 @@ async function mainGameLoop() {
 
         await customizeMap(player, dungeon);
 
-        while(player.attributes.currentHP > 0) {
+        while(player.attributes.currentHP > 0 && player.end!=true) {
             await mainAction(player);
         }
 

@@ -19,7 +19,7 @@ let Judge = {
 
     magicAttack(spellcaster, monster, spell, roll){
         if(roll < spellcaster.getMagicAttack()) {
-            let damage = spell.strenght + roller.rollDice(5);
+            let damage = spell.strength + roller.rollDice(5);
             console.log(spellcaster.name + ' magically attacked ' + monster.name + ' for: ' + damage + 'HP');
             monster.damage(damage,'magic');
         } else {

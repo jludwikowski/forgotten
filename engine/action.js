@@ -150,6 +150,18 @@ let Action = {
 
     async levelup(args, player, place) { await player.levelUp() },
 
+    rest(args, player, place) {
+        if(place.monsters.length!=0){
+            console.log('Cannot rest where monsters are nearby');
+        } else {
+            for(let ztime=0;ztime<10;ztime++){
+                player.timerTick(place);
+            }
+            player.replenish(15);
+            console.log('You rested and feel better');
+        }
+    },
+
     fire(args, player, place) { if(player.findItem('flint')!=-1) { place.items.push(new Item('fire','campfire','10',0)) } },
 
     roast(args, player, place) { if(place.findItem('fire')!=-1) { player.roast() } else { console.log(`${chalk.yellow('No fire to roast')}`) } },
@@ -168,13 +180,21 @@ let Action = {
 
     activespells(args, player, place) { console.log(player.activeSpells); },
 
+    equipment(args, player, place) { console.log((player.mainWeapon? 'Holding: \n' + JSON.stringify(player.mainWeapon,null,2):'Unarmed') +
+     '\n' + (player.armor? 'Wearing: \n' + JSON.stringify(player.armor,null,2):''));},
+
+    'show equipment'(args, player, place) {this.equipment(args, player, place)},
+
+    quit(args, player, place) {player.end = true},
+
     help() {
-        console.log('n, e, w, s - travel commands');
+        console.log('n, e, w, s, down, up - travel commands');
         console.log('go strange cave, go small hut - makes you travel into building or cave, exit makes you go out');
         console.log('attack - or just a will attack the closest enemy');
         console.log('l - commands to look around');
         console.log('ln,ls,le,lw - commands to look into nearby area north, south east and west respectively');
         console.log('stats - to show your current attributes. Same goes for "stat weapon"');
+        console.log('show equipment or just equipment shows what you are wearing and holding at the moment');
         console.log('i - display inventory');
         console.log('p - stands for pick up all, pm - pick up money');
         console.log('equip item name - to equip item from inventory, drop item name - to drop inventory item');
@@ -188,8 +208,10 @@ let Action = {
         console.log('spells - to list all spells');
         console.log('activespells - to list all active spells');
         console.log('cast - to cast a specifix spell. For example: cast armor');
+        console.log('rest - to rest a bit, heal and regenerate');
         console.log('save - to save the game');
         console.log('load - to load the game');
+        console.log('quit - to end the game');
     },
 }
 

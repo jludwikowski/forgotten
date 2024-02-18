@@ -62,6 +62,9 @@ let PlaceGenerator = {
             items = items.concat(this.extraItems);
             this.extraItems = [];
         }
+        if(roller.roll()<15){
+            items.push(ItemGenerator.generateBasic('healing herb'));        
+        }
         return new Place(name, biome, plantColor, description, location, items, monsters, feature, enclosed,[exit], areadId);
     },
 
