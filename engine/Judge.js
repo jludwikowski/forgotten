@@ -3,6 +3,7 @@ import roller from "./roller.js";
 let Judge = {
 
     skillUpProbability: 3,
+    magicSkillUpProbability: 6,
     bodyUpProbability: 3,
 
     attack(monster1, monster2) {
@@ -40,7 +41,11 @@ let Judge = {
                 this.attackType(player,monster,skill,spell,roll)
             }
         }
-        if(roll<this.skillUpProbability) { player.attributes[skill]+=1 }
+        let probability = this.skillUpProbability;
+        if(skill=='spellcasting'){
+            probability = this.magicSkillUpProbability
+        }
+        if(roll<probability) { player.attributes[skill]+=1 }
     },
 
     attackType(player,monster,skill,spell, roll) {

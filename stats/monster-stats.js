@@ -204,7 +204,7 @@ let MonsterStats = {
 
     warrior() { return new Monster('warrior', 'warrior', new Attributes(0,1,1,0,0,0,0,0,0,10,0,0,0,0), null, null, null, 0, 1.5) },
     rogue() { return new Monster('rogue', 'rogue', new Attributes(      0,0,1,1,1,0,0,0,0,5,10,0,0,0), null, null, null, 0, 1.5) },
-    mage() { return new Monster('mage', 'mage', new Attributes(         0,0,0,0,0,1,1,0,0,0,0,20,0,0), null, null, null, 0, 1.5) },
+    mage() { return new Monster('mage', 'mage', new Attributes(         0,0,0,0,0,2,1,0,0,0,0,20,0,0), null, null, null, 0, 1.5) },
     shaman() { return new Monster('shaman', 'shaman', new Attributes(   0,0,1,0,0,1,0,0,0,5,0,15,0,0), null, null, null, 0, 1.5) },
 
     hungry() { return new Monster(null, null, new Attributes(0, 0, -1, -1,-1,0,0,0,0,0,0,0,0,0), null, null, null, 0, 1) },

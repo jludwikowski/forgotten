@@ -97,7 +97,7 @@ let PlaceGenerator = {
             if(plantF == '. You see some berry bush'){
                 this.extraItems.push(ItemGenerator.generateBasic('berries'));
             }
-            if(plantF == '. You see rign of man hight tall mushrooms here') {
+            if(plantF == '. You see ring of man hight tall mushrooms here') {
                 this.extraItems.push(ItemGenerator.generateBasic('edible mushrooms'));
             }
             return plantF;
