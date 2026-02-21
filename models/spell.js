@@ -23,6 +23,7 @@ class Spell extends Entity {
         this.description = spell.description ? spell.description + ' ' + this.description: this.description;
         this.cost =  Math.round(this.cost*spell.cost);
         this.duration = spell.duration ? spell.duration + this.duration : this.duration;
+        this.durationLeft = spell.durationLeft ? spell.durationLeft + this.durationLeft: this.durationLeft;
         this.strength = spell.strength ? spell.strength + this.strength : this.strength;
         this.effect = spell.effect ? spell.effect : this.effect;
         if(this.effect && effectModifierTable.includes(spell.name)) {
